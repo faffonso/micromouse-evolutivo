@@ -1,3 +1,9 @@
-#include <iostream.h>
-#include <string.h>
+#include <iostream>
+#include <string>
+#include <exception>
 
+
+int main(){
+    std::cout << "hello world\n";
+    return 0;
+}
