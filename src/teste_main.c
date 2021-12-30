@@ -75,8 +75,7 @@ int MoveinMaze(int Maze[7][7], int crom[MAX_INFO_LEN], int x, int y){
 
     int i = 0;
     while(i < MAX_INFO_LEN){
-        switch (crom[i])
-        {       
+        switch (crom[i]){       
             case 0: // left
                 printf("\nmaze[%d][%d-1] = %d", y, x, Maze[y][x-1]);
                 if(Maze[y][x - 1] == 0){
