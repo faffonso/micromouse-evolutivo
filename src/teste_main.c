@@ -9,24 +9,32 @@
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
 #define MAX_INFO_LEN 10
 
+// Struct indivíduo do tipo cromossomos, contendo informações dos indivíduos 
 typedef struct individuo{
     int cromossomos[MAX_INFO_LEN];
     struct individuo *prox;
 } cromossomos;
 
+// Struct indivíduo do tipo lista de indivíduos, formando uma TABELA PORRA
 typedef struct individuo *listaIndividuos;
 
+// Struct do tipo lista com vetor de inteiros, sendo eles os genes 
 typedef struct{
+    // Vetor do tipo lista de indivíduos com a quantidade de genes
+    // necessários para completar o labirinto
     listaIndividuos *genes;
 } lista;
 
 float fit[TAMPOP]; // fitness para cad individuo
 int generation = 0;
 
+// Cria os genes da lista encadeada (lista de vetores >> matriz), sendo uma função do tipo lista 
 lista *criar_genes(){
 
+    // Aloca dinamicamente o espaço de TAMPOP posições do tamanho de inteiroes para a lista de genes 
     listaIndividuos *genes = (listaIndividuos *) calloc (TAMPOP, sizeof (listaIndividuos));
 
+    // Retorna os genes da lista 
     return genes;
 }
 
