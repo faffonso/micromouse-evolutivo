@@ -23,7 +23,7 @@ typedef struct{
 float fit[TAMPOP]; // fitness para cad individuo
 int generation = 0;
 
-listaIndividuos *criar_genes{
+lista *criar_genes(){
 
     listaIndividuos *genes = (listaIndividuos *) calloc (TAMPOP, sizeof (listaIndividuos));
 
@@ -43,9 +43,9 @@ void inserir_genes(listaIndividuos *genes, int gene){
 
 lista *criar_lista(lista *tabela, int gene){
 
-    tabela->genes = calloc (1, sizeof (lista));
+    tabela->genes = calloc (1, sizeof (lista)); // QEU TABELA PORRA
 
-    tabela->genes = criar_genes(gene);
+    tabela->genes = criar_genes(gene); 
 
     return tabela;
 }
@@ -70,7 +70,7 @@ int MoveinMaze(int Maze){
 // GIAN
 int InitPopulation(){
     for (int i = 0; i < TAMPOP; i++){
-        inserir_genes(&tabela->genes[rand() % 1000]);
+        inserir_genes(&tabela->genes[rand() % 1000]); // QUE TABELA PORRA
     }
 }
 
