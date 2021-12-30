@@ -65,7 +65,7 @@ int MazeCreation(int Maze){
 int MoveinMaze(int Maze[7][7], int crom[MAX_INFO_LEN], int x, int y){
 
     int flag;
-    // flag = 0 BATEU = 1 ANDANDO = 2 CHEGOU
+    // flag = 0 ANDANDO, flag = 1 BATEU, flag = 2 CHEGOU
 
     for(int m = 0; m < 7; m++){
         for(int n = 0; n < 7; n++)
@@ -78,55 +78,63 @@ int MoveinMaze(int Maze[7][7], int crom[MAX_INFO_LEN], int x, int y){
         switch (crom[i])
         {       
             case 0: // left
-                if(Maze[x - 1][y] == 0){
+                printf("\nmaze[%d][%d-1] = %d", y, x, Maze[y][x-1]);
+                if(Maze[y][x - 1] == 0){
                     printf("\nBATEU");
                     flag = 1;
                     break;
                 }
-                else if(Maze[x - 1][y] == 2){
+                else if(Maze[y][x - 1] == 2){
                     printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
+                printf("\nANDANDO");
                 x--; // left
                 break;
             case 1: // right
-                if(Maze[x + 1][y] == 0){
+                printf("\nmaze[%d,%d+1] = %d", y, x, Maze[y][x+1]);
+                if(Maze[y][x + 1] == 0){
                     printf("\nBATEU");
                     flag = 1;
                     break;
                 }
-                else if(Maze[x + 1][y] == 2){
+                else if(Maze[y][x + 1] == 2){
                     printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
+                printf("\nANDANDO");
                 x++; // right
                 break;
             case 2: // up
-                if(Maze[x][y - 1] == 0){
+                printf("\nmaze[%d - 1,%d] = %d", y, x, Maze[y-1][x]);
+                if(Maze[y - 1][x] == 0){
                     printf("\nBATEU");
                     flag = 1;
                     break;
                 }
-                else if(Maze[x][y - 1] == 2){
+                else if(Maze[y - 1][x] == 2){
                     printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
+                printf("\nANDANDO");
                 y--; // up
                 break;
             case 3: // down
-                if(Maze[x][y + 1] == 0){
+                printf("\nmaze[%d+1,%d] = %d", y, x, Maze[y+1][x]);
+                if(Maze[y + 1][x] == 0){
                     printf("\nBATEU");
                     flag = 1;
                     break;
                 }
-                else if(Maze[x][y + 1] == 2){
+                else if(Maze[y + 1][x] == 2){
                     printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
+                printf("\nANDANDO");
                 y++; // down
                 break;
         }
@@ -136,6 +144,16 @@ int MoveinMaze(int Maze[7][7], int crom[MAX_INFO_LEN], int x, int y){
 
     }
 
+    if(flag == 1)
+        for(int m = i + 1; m < MAX_INFO_LEN; m++)
+            crom[m] = 5;
+
+    if(flag == 2)
+        for(int m = i + 1; m < MAX_INFO_LEN; m++)
+            crom[m] = 6;
+
+    for(int m = 0; m < MAX_INFO_LEN; m++)
+        printf("\ncrom[m] = %d", crom[m]);
 }
 
 // TODO: Iniciar população 
