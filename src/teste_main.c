@@ -127,12 +127,12 @@ int main(){
     // 0 = parede, 1 = caminho, 2 = objetivo
     // acho que essa ta funcionando
 
-    for (int i = 0; i < 6; i++){
-        std::cout << "Maze: %d\n", Maze[0][i];
-    }
+    for (int i = 0; i < 6; i++)
+        printf("Maze: %d\n", Maze[0][i]);
+
 
     //MoveinMaze(Maze);
+
     
-    std::cout << "hello world\n";
     return 0;
 }
