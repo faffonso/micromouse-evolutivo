@@ -6,8 +6,8 @@
 #define TAMPOP 10
 #define N 7
 
-// Número de informações máxima presentes em um cromossomo 
-#define MAX_INFO_LEN 100
+// Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
+#define MAX_INFO_LEN 10
 
 typedef struct individuo{
     int cromossomos[MAX_INFO_LEN];
@@ -62,15 +62,87 @@ int MazeCreation(int Maze){
 // ela que vai dizer em que bloco que ele parou até bater em uma parede ou até chegar no destino
 // sugestão: se ele bateu na nº possição do cromossomo, da n-ésima + 1 pra frente deixar tudo 5
 // sugestão: se ele chegou na soluçao na nº posição, da n-ésima pra frente deixar tudo 6 - TOMAS
-int MoveinMaze(int Maze){
+int MoveinMaze(int Maze[7][7], int crom[MAX_INFO_LEN], int x, int y){
+
+    int flag;
+    // flag = 0 BATEU = 1 ANDANDO = 2 CHEGOU
+
+    for(int m = 0; m < 7; m++){
+        for(int n = 0; n < 7; n++)
+            printf(" %d ", Maze[m][n]);
+        printf("\n");   
+    }    
+
+    int i = 0;
+    while(i < MAX_INFO_LEN){
+        switch (crom[i])
+        {       
+            case 0: // left
+                if(Maze[x - 1][y] == 0){
+                    printf("\nBATEU");
+                    flag = 1;
+                    break;
+                }
+                else if(Maze[x - 1][y] == 2){
+                    printf("\nCHEGOU NA SOLUCAO");
+                    flag = 2;
+                    break;
+                }
+                x--; // left
+                break;
+            case 1: // right
+                if(Maze[x + 1][y] == 0){
+                    printf("\nBATEU");
+                    flag = 1;
+                    break;
+                }
+                else if(Maze[x + 1][y] == 2){
+                    printf("\nCHEGOU NA SOLUCAO");
+                    flag = 2;
+                    break;
+                }
+                x++; // right
+                break;
+            case 2: // up
+                if(Maze[x][y - 1] == 0){
+                    printf("\nBATEU");
+                    flag = 1;
+                    break;
+                }
+                else if(Maze[x][y - 1] == 2){
+                    printf("\nCHEGOU NA SOLUCAO");
+                    flag = 2;
+                    break;
+                }
+                y--; // up
+                break;
+            case 3: // down
+                if(Maze[x][y + 1] == 0){
+                    printf("\nBATEU");
+                    flag = 1;
+                    break;
+                }
+                else if(Maze[x][y + 1] == 2){
+                    printf("\nCHEGOU NA SOLUCAO");
+                    flag = 2;
+                    break;
+                }
+                y++; // down
+                break;
+        }
+    if(flag == 1 || flag == 2)
+        break;
+    i++;    
+
+    }
 
 }
 
 // TODO: Iniciar população 
 // GIAN
-int InitPopulation(){
+int InitPopulation(int tabela){
     for (int i = 0; i < TAMPOP; i++){
-        inserir_genes(&tabela->genes[rand() % 1000]); // QUE TABELA PORRA
+        //inserir_genes(&tabela->genes[rand() % 1000]); //! QUE TABELA PORRA  ????
     }
 }
 
@@ -127,12 +199,17 @@ int main(){
     // 0 = parede, 1 = caminho, 2 = objetivo
     // acho que essa ta funcionando
 
-    for (int i = 0; i < 6; i++)
-        printf("Maze: %d\n", Maze[0][i]);
+    int cromossomo_teste[MAX_INFO_LEN];
 
+    for(int i = 0; i < MAX_INFO_LEN; i++){
+        cromossomo_teste[i] = rand() % 4; // numero aleatorio entre 0 e 3
+        printf("cromossomo_teste[%d] = %d\n", i, cromossomo_teste[i]);
+    }
 
-    //MoveinMaze(Maze);
+    int x0 = 5;
+    int y0 = 5;
 
-    
+    MoveinMaze(Maze, cromossomo_teste, x0, y0);
+
     return 0;
 }
