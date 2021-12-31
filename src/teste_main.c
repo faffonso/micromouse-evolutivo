@@ -43,7 +43,7 @@ void inserir_genes(listaIndividuos *genes, int gene){
 
     int aux;
 
-    // Cria um ponteiro para um novo cromossomo do tipo croomossomo
+    // Cria um ponteiro para um novo cromossomo do tipo cromossomo
     cromossomos *novoCromossomos = (cromossomos *) calloc (MAX_INFO_LEN, sizeof (cromossomos));
 
     // Copia o valor inteiro que será inserido para o novo cromossomo 
@@ -155,9 +155,10 @@ int MoveinMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y){
 
 // TODO: Iniciar população 
 // GIAN
-int InitPopulation(int tabela){
-    for (int i = 0; i < TAMPOP; i++){
-        //inserir_genes(&tabela->genes[rand() % 1000]); //! QUE TABELA PORRA  ????
+int initPopulation(lista *tabela, unsigned info){
+    for (int i = 0; i < MAX_INFO_LEN; i++){
+        // Era para inserir os genes de cada indíviduo na tabela, mas por enquanto tá dando erro
+        inserir_genes(&tabela->genes[i], (double) (rand() % 1000));
     }
 }
 
@@ -228,6 +229,18 @@ int main(){
     int cromossomos[TAMPOP][MAX_INFO_LEN];
     int vet_aux[MAX_INFO_LEN];
     int fitness[TAMPOP];
+
+    // Cria uma tabela do tipo lista
+    lista tabela;
+
+    // Cria uma lista com os cromossomos de cada indíviduo
+    criar_lista(&tabela, MAX_INFO_LEN);
+
+    /*
+    for(int i = 0; i < TAMPOP; i++)
+        for(int j = 0; j < MAX_INFO_LEN; j++)
+            printf("Cromossomo[%d]: %d \n", i, &tabela.genes[j]);
+    */
 
     for(int i = 0; i < TAMPOP; i++){
         for(int j = 0; j < MAX_INFO_LEN; j++){
