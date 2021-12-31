@@ -38,23 +38,30 @@ lista *criar_genes(){
     return genes;
 }
 
+// Insere cada gene na lista, formando a lista encadeada
 void inserir_genes(listaIndividuos *genes, int gene){
 
     int aux;
 
+    // Cria um ponteiro para um novo cromossomo do tipo croomossomo
     cromossomos *novoCromossomos = (cromossomos *) calloc (MAX_INFO_LEN, sizeof (cromossomos));
 
+    // Copia o valor inteiro que será inserido para o novo cromossomo 
     aux = novoCromossomos->cromossomos;
     novoCromossomos->prox = *genes;
     *genes = novoCromossomos;
 }
 
+// Função do tipo lista que aponta para criar lista, criando a tabela para guardar os vetores de cromossomos
 lista *criar_lista(lista *tabela, int gene){
 
+    // Aloca dinamicamente um espaço de *tantas* posições para o vetor de genes
     tabela->genes = calloc (1, sizeof (lista)); // QEU TABELA PORRA
 
+    // Tabela que atribui os cromossomos da lista de genes 
     tabela->genes = criar_genes(gene); 
 
+    // Retorna a tabela para a criação e inserção dos genes nos cromossomos de cada indíviduo 
     return tabela;
 }
 
