@@ -3,7 +3,7 @@
 #include <math.h>
 
 // Definição inicial do tamanho da população e do tamanho do labirinto 
-#define TAMPOP 5
+#define TAMPOP 20
 #define N 7
 
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
@@ -56,101 +56,13 @@ void inserir_genes(listaIndividuos *genes, int gene){
 lista *criar_lista(lista *tabela, int gene){
 
     // Aloca dinamicamente um espaço de *tantas* posições para o vetor de genes
-    tabela->genes = calloc (1, sizeof (lista)); // QEU TABELA PORRA
+    tabela->genes = calloc (1, sizeof (lista));
 
     // Tabela que atribui os cromossomos da lista de genes 
     tabela->genes = criar_genes(gene); 
 
     // Retorna a tabela para a criação e inserção dos genes nos cromossomos de cada indíviduo 
     return tabela;
-}
-
-// TODO: Criar o labirinto (montar a matriz e o labirinto com as paredes 0 e os espaços livres 1)
-// no começo podemos só usar um labiritno exemplo - TOMAS
-int MazeCreation(int Maze){
-    
-
-}
-
-// TODO: Fazer a movimentação dos indivíduos dentro do labirinto
-// cada individuo vai ter um cromossomo com os movimentos deles, essa funçaõ deve fazer essa mov.
-// ela que vai dizer em que bloco que ele parou até bater em uma parede ou até chegar no destino
-// sugestão: se ele bateu na nº possição do cromossomo, da n-ésima + 1 pra frente deixar tudo 5
-// sugestão: se ele chegou na soluçao na nº posição, da n-ésima pra frente deixar tudo 6 - TOMAS
-int MoveinMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y){
-
-    int flag;
-    // flag = 0 ANDANDO, flag = 1 BATEU, flag = 2 CHEGOU
-
-
-    int i = 0;
-    while(i < MAX_INFO_LEN){
-        flag = 0;
-        switch (crom[i]){       
-            case 0: // left
-                if(Maze[y][x - 1] == 0){
-                    flag = 1;
-                    break;
-                }
-                else if(Maze[y][x - 1] == 2){
-                    flag = 2;
-                    break;
-                }
-                x--; // left
-                break;
-            case 1: // right
-                if(Maze[y][x + 1] == 0){
-                    flag = 1;
-                    break;
-                }
-                else if(Maze[y][x + 1] == 2){
-                    flag = 2;
-                    break;
-                }
-                x++; // right
-                break;
-            case 2: // up
-                if(Maze[y - 1][x] == 0){
-                    flag = 1;
-                    break;
-                }
-                else if(Maze[y - 1][x] == 2){
-                    flag = 2;
-                    break;
-                }
-                y--; // up
-                break;
-            case 3: // down
-                if(Maze[y + 1][x] == 0){
-                    flag = 1;
-                    break;
-                }
-                else if(Maze[y + 1][x] == 2){
-                    flag = 2;
-                    break;
-                }
-                y++; // down
-                break;
-        }
-        if(flag == 1 || flag == 2){
-            printf("\nBateu! movimento = %d", crom[i]);
-            break;
-        }
-        i++;    
-    }
-
-    if(flag == 1)
-        for(int m = i + 1; m < MAX_INFO_LEN; m++)
-            crom[m] = 5;
-
-    if(flag == 2)
-        for(int m = i + 1; m < MAX_INFO_LEN; m++)
-            crom[m] = 6;
-
-    printf("\n>>> ");
-    for(int m = 0; m < MAX_INFO_LEN; m++)
-        printf(" %d ", crom[m]);
-    printf("\n");
 }
 
 // TODO: Iniciar população 
@@ -162,29 +74,99 @@ int initPopulation(lista *tabela, unsigned info){
     }
 }
 
+// TODO: Criar o labirinto (montar a matriz e o labirinto com as paredes 0 e os espaços livres 1)
+// no começo podemos só usar um labiritno exemplo - TOMAS
+int MazeCreation(int Maze){
+    
+
+}
+
+// funcao auxiliar da moveInMaze
+int MazePosition(int Maze[N][N], int *x, int *y, int dx, int dy, int *flag, int Ds[TAMPOP], int indiv){
+    
+    // levanta a flag se bateu ou chegou na solução, caso contrario incrementa o passo e continua
+    if(Maze[*y + dy][*x + dx] == 0)
+        *flag = 1;
+    else if(Maze[*y + dy][*x + dx] == 2)
+        *flag = 2;
+    else{
+        *x = *x + dx;
+        *y = *y + dy;
+    }
+
+    // calcula a distancia do ponto que bateu até o meio
+    // meio = (N - 1)/2 em x e em y
+    Ds[indiv] = abs(*x - (N - 1)/2) + abs(*y - (N - 1)/2);
+}
+
+// TODO: Fazer a movimentação dos indivíduos dentro do labirinto
+// cada individuo vai ter um cromossomo com os movimentos deles, essa funçaõ deve fazer essa mov.
+// ela que vai dizer em que bloco que ele parou até bater em uma parede ou até chegar no destino
+// sugestão: se ele bateu na nº possição do cromossomo, da n-ésima + 1 pra frente deixar tudo 5
+// sugestão: se ele chegou na soluçao na nº posição, da n-ésima pra frente deixar tudo 6 - TOMAS
+int moveInMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, int Ds[TAMPOP], int indiv){
+
+    // flag = 0 ANDANDO, flag = 1 BATEU, flag = 2 CHEGOU
+    int flag;
+    // Distancia para o cálculo do Fitness, dist = dx + dy (catetos até o meio)
+
+    int gene = 0;
+    while(gene < MAX_INFO_LEN){
+        flag = 0;
+        switch (crom[gene]){       
+            case 0: // left
+                MazePosition(Maze, &x, &y, -1, 0, &flag, Ds, indiv);
+                break;
+            case 1: // right
+                MazePosition(Maze, &x, &y, +1, 0, &flag, Ds, indiv);
+                break;
+            case 2: // up
+                MazePosition(Maze, &x, &y, 0, -1, &flag, Ds, indiv);
+                break;
+            case 3: // down
+                MazePosition(Maze, &x, &y, 0, +1, &flag, Ds, indiv);
+                break;
+        }
+        if(flag == 1 || flag == 2) 
+            break;
+        gene++;    
+    }
+    if(flag == 1)
+        for(int m = gene + 1; m < MAX_INFO_LEN; m++)
+            crom[m] = 5;
+
+    if(flag == 2)
+        for(int m = gene + 1; m < MAX_INFO_LEN; m++)
+            crom[m] = 6;
+}
+
+
 // TODO: Criar função de avaliação 
 // TOMAS
-int FitnessFunction(int fitness, int crom[MAX_INFO_LEN]){
+int FitnessFunction(int fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPOP], int indiv){
 
-    // meio é em N+1/2 no x e no y
-    //! Falta calcular a distancia, vou ter que mexer no código do MoveInMaze e fazer alguma baianagem
+    // meio é em N-1/2 no x e no y
 
-    int D = N/2; // só pra dar uma brincada
-    int B = 0, R = 0;
+    int B = 0, R = 0, D = Ds[indiv];
 
-    int ant = 0, atual = 0;
+
+    int ant = 10, atual = 10;
     for(int i = 0; i < MAX_INFO_LEN; i++){
         atual = crom[i];
-        if(crom[i] == 5)
-            B = i - 1;
         if((ant == 0 && atual == 1) || (ant == 1 && atual == 0) || (ant == 2 && atual == 3) || (ant == 3 && atual == 2))
-            R++;
+            R++;        
         ant = crom[i];
     }
 
-    fitness = (100/(D + 1)) - (5)*R - (1)*B;
+    for(int i = 0; i < MAX_INFO_LEN; i++)
+        if(crom[i] == 5){
+            B = i - 1;
+            break;
+        }
 
-    return fitness;
+
+    fitness[indiv] = (100/(D + 1)) - (5)*R - (1)*B;
+    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %d", indiv, D, R, B, fitness[indiv]);
 }
 
 // TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
@@ -216,19 +198,15 @@ int main(){
 
     srand(time(NULL));
     
-    int Maze[N][N] = {{0, 0, 0, 0, 0, 0 ,0},
-                    {0, 1, 1, 1, 1, 1 ,0},
-                    {0, 1, 0, 0, 0, 1 ,0},
-                    {0, 1, 0, 2, 1, 1 ,0},
-                    {0, 1, 0, 0, 0, 0 ,0},
-                    {0, 1, 1, 1, 1, 1 ,0},
-                    {0, 0, 0, 0, 0, 0 ,0}};
+    int Maze[N][N] =   {{0, 0, 0, 0, 0, 0 ,0},
+                        {0, 1, 1, 1, 1, 1 ,0},
+                        {0, 1, 0, 0, 0, 1 ,0},
+                        {0, 1, 0, 2, 1, 1 ,0},
+                        {0, 1, 0, 0, 0, 0 ,0},
+                        {0, 1, 1, 1, 1, 1 ,0},
+                        {0, 0, 0, 0, 0, 0 ,0}};
     // 0 = parede, 1 = caminho, 2 = objetivo
     // acho que essa ta funcionando
-
-    int cromossomos[TAMPOP][MAX_INFO_LEN];
-    int vet_aux[MAX_INFO_LEN];
-    int fitness[TAMPOP];
 
     // Cria uma tabela do tipo lista
     lista tabela;
@@ -242,6 +220,12 @@ int main(){
             printf("Cromossomo[%d]: %d \n", i, &tabela.genes[j]);
     */
 
+    int cromossomos[TAMPOP][MAX_INFO_LEN];
+    int fitness[TAMPOP];
+    int vet_aux[MAX_INFO_LEN];
+    int Ds[TAMPOP];
+
+    printf("\n\n");
     for(int i = 0; i < TAMPOP; i++){
         for(int j = 0; j < MAX_INFO_LEN; j++){
             cromossomos[i][j] = rand() % 4; // numero aleatorio entre 0 e 3
@@ -259,22 +243,28 @@ int main(){
     int x0 = 5;
     int y0 = 5;
 
-    // gambiarra, mas no geral passa o a matriz de cromossomos individuo por individuo para o MoveInMaze
+    // gambiarra, mas no geral passa o a matriz de cromossomos individuo por individuo para o moveInMaze
+    //* MOVE IN MAZE
     for(int i = 0; i < TAMPOP; i++){
+        // copia o vetor pra um aux
         for(int j = 0; j < MAX_INFO_LEN; j++)
             vet_aux[j] = cromossomos[i][j];
-        MoveinMaze(Maze, vet_aux, x0, y0);
+        // chama a funcao moveInMaze
+        moveInMaze(Maze, vet_aux, x0, y0, Ds, i);
+        // copia de volta pro cromossomos
         for(int j = 0; j < MAX_INFO_LEN; j++)
             cromossomos[i][j] = vet_aux[j];
     }
 
+    //* FITNESS FUNCTION
     for(int i = 0; i < TAMPOP; i++){
         for(int j = 0; j < MAX_INFO_LEN; j++)
             vet_aux[j] = cromossomos[i][j];
-        FitnessFunction(fitness[i], vet_aux);
+        FitnessFunction(fitness, vet_aux, Ds, i);
     }
 
     // printa a matriz de individuos atualizada
+    printf("\n\n");
     for(int i = 0; i < TAMPOP; i++){
         for(int j = 0; j < MAX_INFO_LEN; j++){
             printf(" %d ", cromossomos[i][j]);
@@ -282,8 +272,6 @@ int main(){
         printf("\n");
     }
 
-    for(int i = 0; i < TAMPOP; i++)
-        printf("\nfitness[%d] = %d", i, fitness[i]);
-
+    printf("\n");
     return 0;
 }
