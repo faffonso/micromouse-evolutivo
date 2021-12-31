@@ -3,7 +3,7 @@
 #include <math.h>
 
 // Definição inicial do tamanho da população e do tamanho do labirinto 
-#define TAMPOP 10
+#define TAMPOP 5
 #define N 7
 
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
@@ -70,85 +70,66 @@ int MazeCreation(int Maze){
 // ela que vai dizer em que bloco que ele parou até bater em uma parede ou até chegar no destino
 // sugestão: se ele bateu na nº possição do cromossomo, da n-ésima + 1 pra frente deixar tudo 5
 // sugestão: se ele chegou na soluçao na nº posição, da n-ésima pra frente deixar tudo 6 - TOMAS
-int MoveinMaze(int Maze[7][7], int crom[MAX_INFO_LEN], int x, int y){
+int MoveinMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y){
 
     int flag;
     // flag = 0 ANDANDO, flag = 1 BATEU, flag = 2 CHEGOU
 
-    for(int m = 0; m < 7; m++){
-        for(int n = 0; n < 7; n++)
-            printf(" %d ", Maze[m][n]);
-        printf("\n");   
-    }    
 
     int i = 0;
     while(i < MAX_INFO_LEN){
+        flag = 0;
         switch (crom[i]){       
             case 0: // left
-                printf("\nmaze[%d][%d-1] = %d", y, x, Maze[y][x-1]);
                 if(Maze[y][x - 1] == 0){
-                    printf("\nBATEU");
                     flag = 1;
                     break;
                 }
                 else if(Maze[y][x - 1] == 2){
-                    printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
-                printf("\nANDANDO");
                 x--; // left
                 break;
             case 1: // right
-                printf("\nmaze[%d,%d+1] = %d", y, x, Maze[y][x+1]);
                 if(Maze[y][x + 1] == 0){
-                    printf("\nBATEU");
                     flag = 1;
                     break;
                 }
                 else if(Maze[y][x + 1] == 2){
-                    printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
-                printf("\nANDANDO");
                 x++; // right
                 break;
             case 2: // up
-                printf("\nmaze[%d - 1,%d] = %d", y, x, Maze[y-1][x]);
                 if(Maze[y - 1][x] == 0){
-                    printf("\nBATEU");
                     flag = 1;
                     break;
                 }
                 else if(Maze[y - 1][x] == 2){
-                    printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
-                printf("\nANDANDO");
                 y--; // up
                 break;
             case 3: // down
-                printf("\nmaze[%d+1,%d] = %d", y, x, Maze[y+1][x]);
                 if(Maze[y + 1][x] == 0){
-                    printf("\nBATEU");
                     flag = 1;
                     break;
                 }
                 else if(Maze[y + 1][x] == 2){
-                    printf("\nCHEGOU NA SOLUCAO");
                     flag = 2;
                     break;
                 }
-                printf("\nANDANDO");
                 y++; // down
                 break;
         }
-    if(flag == 1 || flag == 2)
-        break;
-    i++;    
-
+        if(flag == 1 || flag == 2){
+            printf("\nBateu! movimento = %d", crom[i]);
+            break;
+        }
+        i++;    
     }
 
     if(flag == 1)
@@ -159,8 +140,10 @@ int MoveinMaze(int Maze[7][7], int crom[MAX_INFO_LEN], int x, int y){
         for(int m = i + 1; m < MAX_INFO_LEN; m++)
             crom[m] = 6;
 
+    printf("\n>>> ");
     for(int m = 0; m < MAX_INFO_LEN; m++)
-        printf("\ncrom[m] = %d", crom[m]);
+        printf(" %d ", crom[m]);
+    printf("\n");
 }
 
 // TODO: Iniciar população 
@@ -173,8 +156,27 @@ int InitPopulation(int tabela){
 
 // TODO: Criar função de avaliação 
 // TOMAS
-int FitnessFunction(){
-    
+int FitnessFunction(int fitness, int crom[MAX_INFO_LEN]){
+
+    // meio é em N+1/2 no x e no y
+    //! Falta calcular a distancia, vou ter que mexer no código do MoveInMaze e fazer alguma baianagem
+
+    int D = N/2; // só pra dar uma brincada
+    int B = 0, R = 0;
+
+    int ant = 0, atual = 0;
+    for(int i = 0; i < MAX_INFO_LEN; i++){
+        atual = crom[i];
+        if(crom[i] == 5)
+            B = i - 1;
+        if((ant == 0 && atual == 1) || (ant == 1 && atual == 0) || (ant == 2 && atual == 3) || (ant == 3 && atual == 2))
+            R++;
+        ant = crom[i];
+    }
+
+    fitness = (100/(D + 1)) - (5)*R - (1)*B;
+
+    return fitness;
 }
 
 // TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
@@ -204,17 +206,9 @@ int RearrangePop(){
 
 int main(){
 
-    //matriz de individuos com cada cromossomo 
-    int **inds = (int **)calloc(TAMPOP, sizeof(int)); 
-    int i = 0;
-    while(i < TAMPOP){
-        inds[i]= (int *)calloc(TAMPOP, sizeof(int));
-        i++;}
-
-
     srand(time(NULL));
     
-    int Maze[7][7] = {{0, 0, 0, 0, 0, 0 ,0},
+    int Maze[N][N] = {{0, 0, 0, 0, 0, 0 ,0},
                     {0, 1, 1, 1, 1, 1 ,0},
                     {0, 1, 0, 0, 0, 1 ,0},
                     {0, 1, 0, 2, 1, 1 ,0},
@@ -224,17 +218,52 @@ int main(){
     // 0 = parede, 1 = caminho, 2 = objetivo
     // acho que essa ta funcionando
 
-    int cromossomo_teste[MAX_INFO_LEN];
+    int cromossomos[TAMPOP][MAX_INFO_LEN];
+    int vet_aux[MAX_INFO_LEN];
+    int fitness[TAMPOP];
 
-    for(int i = 0; i < MAX_INFO_LEN; i++){
-        cromossomo_teste[i] = rand() % 4; // numero aleatorio entre 0 e 3
-        printf("cromossomo_teste[%d] = %d\n", i, cromossomo_teste[i]);
+    for(int i = 0; i < TAMPOP; i++){
+        for(int j = 0; j < MAX_INFO_LEN; j++){
+            cromossomos[i][j] = rand() % 4; // numero aleatorio entre 0 e 3
+            printf(" %d ", cromossomos[i][j]);
+        }
+        printf("\n");
     }
+
+    /* cromossomos:
+    ind1 : 0, 1, 3, 2 ...
+    ind2 : 1, 3, 0, 0 ...
+    ...
+    */
 
     int x0 = 5;
     int y0 = 5;
 
-    MoveinMaze(Maze, cromossomo_teste, x0, y0);
+    // gambiarra, mas no geral passa o a matriz de cromossomos individuo por individuo para o MoveInMaze
+    for(int i = 0; i < TAMPOP; i++){
+        for(int j = 0; j < MAX_INFO_LEN; j++)
+            vet_aux[j] = cromossomos[i][j];
+        MoveinMaze(Maze, vet_aux, x0, y0);
+        for(int j = 0; j < MAX_INFO_LEN; j++)
+            cromossomos[i][j] = vet_aux[j];
+    }
+
+    for(int i = 0; i < TAMPOP; i++){
+        for(int j = 0; j < MAX_INFO_LEN; j++)
+            vet_aux[j] = cromossomos[i][j];
+        FitnessFunction(fitness[i], vet_aux);
+    }
+
+    // printa a matriz de individuos atualizada
+    for(int i = 0; i < TAMPOP; i++){
+        for(int j = 0; j < MAX_INFO_LEN; j++){
+            printf(" %d ", cromossomos[i][j]);
+        }
+        printf("\n");
+    }
+
+    for(int i = 0; i < TAMPOP; i++)
+        printf("\nfitness[%d] = %d", i, fitness[i]);
 
     return 0;
 }
