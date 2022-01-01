@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 // Definição inicial do tamanho da população e do tamanho do labirinto 
-#define TAMPOP 20
+#define TAMPOP 10
 #define N 7
 
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
@@ -67,7 +68,7 @@ lista *criar_lista(lista *tabela, int gene){
 
 // TODO: Iniciar população 
 // GIAN
-int initPopulation(lista *tabela, unsigned info){
+void initPopulation(lista *tabela, unsigned info){
     for (int i = 0; i < MAX_INFO_LEN; i++){
         // Era para inserir os genes de cada indíviduo na tabela, mas por enquanto tá dando erro
         inserir_genes(&tabela->genes[i], (double) (rand() % 1000));
@@ -82,7 +83,7 @@ int MazeCreation(int Maze){
 }
 
 // funcao auxiliar da moveInMaze
-int MazePosition(int Maze[N][N], int *x, int *y, int dx, int dy, int *flag, int Ds[TAMPOP], int indiv){
+void MazePosition(int Maze[N][N], int *x, int *y, int dx, int dy, int *flag, int Ds[TAMPOP], int indiv){
     
     // levanta a flag se bateu ou chegou na solução, caso contrario incrementa o passo e continua
     if(Maze[*y + dy][*x + dx] == 0)
@@ -104,7 +105,7 @@ int MazePosition(int Maze[N][N], int *x, int *y, int dx, int dy, int *flag, int 
 // ela que vai dizer em que bloco que ele parou até bater em uma parede ou até chegar no destino
 // sugestão: se ele bateu na nº possição do cromossomo, da n-ésima + 1 pra frente deixar tudo 5
 // sugestão: se ele chegou na soluçao na nº posição, da n-ésima pra frente deixar tudo 6 - TOMAS
-int moveInMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, int Ds[TAMPOP], int indiv){
+void moveInMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, int Ds[TAMPOP], int indiv){
 
     // flag = 0 ANDANDO, flag = 1 BATEU, flag = 2 CHEGOU
     int flag;
@@ -143,7 +144,7 @@ int moveInMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, int Ds[TAMP
 
 // TODO: Criar função de avaliação 
 // TOMAS
-int FitnessFunction(int fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPOP], int indiv){
+void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPOP], int indiv){
 
     // meio é em N-1/2 no x e no y
 
@@ -166,7 +167,7 @@ int FitnessFunction(int fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPOP],
 
 
     fitness[indiv] = (100/(D + 1)) - (5)*R - (1)*B;
-    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %d", indiv, D, R, B, fitness[indiv]);
+    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
 }
 
 // TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
@@ -190,6 +191,22 @@ int Mutation(){
 // TODO: Rearranja população mutada para o início de uma nova geração 
 // GIAN 
 int RearrangePop(){
+
+}
+
+void manageFile(FILE *file, float fitness[TAMPOP], int gen){
+
+    file = fopen("dados.txt", "a");    
+
+    fprintf(file, "%s", "\nGeneration: ");
+    fprintf(file, "%f", gen);
+    fprintf(file, "%s", "\n\n");
+
+
+    for(int i=0; i < TAMPOP; i++){
+        fprintf(file, "%.2f", fitness[i]);    
+        fprintf(file, "%s", " ");
+    }
 
 }
 
@@ -220,10 +237,18 @@ int main(){
             printf("Cromossomo[%d]: %d \n", i, &tabela.genes[j]);
     */
 
+   //* TOMAS::
+
     int cromossomos[TAMPOP][MAX_INFO_LEN];
-    int fitness[TAMPOP];
+    float fitness[TAMPOP];
     int vet_aux[MAX_INFO_LEN];
     int Ds[TAMPOP];
+
+    FILE *file;
+    file = fopen("dados.txt", "w");
+    fprintf(file, "%s", "Arquivo de dados do Micromouse Evolutivo\n");
+    fclose(file);
+
 
     printf("\n\n");
     for(int i = 0; i < TAMPOP; i++){
@@ -272,6 +297,10 @@ int main(){
         printf("\n");
     }
 
+    manageFile(file, fitness, 0);
+
     printf("\n");
+
+    fclose(file);
     return 0;
 }

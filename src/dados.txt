@@ -1,0 +1,5 @@
+Arquivo de dados do Micromouse Evolutivo
+
+Generation: 0.000000
+
+20.00 20.00 20.00 31.00 20.00 20.00 20.00 20.00 20.00 24.00 
