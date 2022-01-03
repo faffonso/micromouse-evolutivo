@@ -57,7 +57,7 @@ void inserir_genes(listaIndividuos *genes, int gene){
 lista *criar_lista(lista *tabela, int gene){
 
     // Aloca dinamicamente um espaço de *tantas* posições para o vetor de genes
-    tabela->genes = calloc (1, sizeof (lista));
+    tabela->genes = calloc (1,sizeof (lista));
 
     // Tabela que atribui os cromossomos da lista de genes 
     tabela->genes = criar_genes(gene); 
@@ -166,7 +166,7 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPO
         }
 
 
-    fitness[indiv] = (100/(D + 1)) - (5)*R - (1)*B;
+    fitness[indiv] = (100/(D + 1)) - (3)*R - (1)*B;
     printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
 }
 
@@ -231,11 +231,14 @@ int main(){
     // Cria uma lista com os cromossomos de cada indíviduo
     criar_lista(&tabela, MAX_INFO_LEN);
 
-    /*
-    for(int i = 0; i < TAMPOP; i++)
-        for(int j = 0; j < MAX_INFO_LEN; j++)
-            printf("Cromossomo[%d]: %d \n", i, &tabela.genes[j]);
-    */
+    printf("\nTabela:\n");
+    for(int i = 0; i < TAMPOP; i++){
+        for(int j = 0; j < MAX_INFO_LEN; j++){
+            tabela.genes[j] = rand() % 4;
+            printf(" %d ", tabela.genes[j]);
+        }
+        printf("\n");
+    }
 
    //* TOMAS::
 
