@@ -199,7 +199,7 @@ void manageFile(FILE *file, float fitness[TAMPOP], int gen){
     file = fopen("dados.txt", "a");    
 
     fprintf(file, "%s", "\nGeneration: ");
-    fprintf(file, "%f", gen);
+    fprintf(file, "%d", gen);
     fprintf(file, "%s", "\n\n");
 
 
