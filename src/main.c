@@ -66,7 +66,7 @@ lista *criar_lista(lista *tabela, int gene){
     return tabela;
 }
 
-// TODO: Iniciar população 
+// TODO: Iniciar população
 // GIAN
 void initPopulation(lista *tabela, unsigned info){
     for (int i = 0; i < MAX_INFO_LEN; i++){
@@ -77,7 +77,7 @@ void initPopulation(lista *tabela, unsigned info){
 
 // TODO: Criar o labirinto (montar a matriz e o labirinto com as paredes 0 e os espaços livres 1)
 // no começo podemos só usar um labiritno exemplo - TOMAS
-int MazeCreation(int Maze){
+int MazeCreation(int Maze[N][N]){
     
 
 }
@@ -207,7 +207,6 @@ void manageFile(FILE *file, float fitness[TAMPOP], int gen){
         fprintf(file, "%.2f", fitness[i]);    
         fprintf(file, "%s", " ");
     }
-
 }
 
 
