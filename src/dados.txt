@@ -2,4 +2,4 @@ Arquivo de dados do Micromouse Evolutivo
 
 Generation: 0
 
-3.00 3.00 3.00 2.50 2.40 2.80 2.90 2.90 3.00 2.40 
+3.00 3.00 2.40 1.30 2.90 2.00 2.30 2.70 3.00 2.90 
