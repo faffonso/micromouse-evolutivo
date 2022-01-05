@@ -9,24 +9,15 @@ void printList(chromosome *list){
     chromosome *tmp = list;
 
     int i=0;
-<<<<<<< HEAD
+    
+    // Enquanto não houverem elementos "NULL" a lista continuará printando cada elemento
     printf("\n\n");
     while (tmp != NULL) {
         printf ("Indivíduo %d: ", i);
         for (int j = 0; j < TAMPOP; j++)
             printf("%d ", tmp->info[j]);
         printf("\n");
-=======
 
-    // Enquanto não houverem elementos "NULL" a lista continuará printando cada elemento
-    while(tmp != NULL){
-
-        printf ("Indivíduo %d: ", i);
-            for (int i = 0; i < TAMPOP; i++)
-                printf("%d ", tmp->info[i]);
-            printf("\n");
-
->>>>>>> 4949855e799b01f2f0ea3b733a8a8e2d1fdd1424
         tmp = tmp->next;
         i++;
     }
