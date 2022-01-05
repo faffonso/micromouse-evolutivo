@@ -6,14 +6,14 @@
 
 typedef struct individuo{
     int info[MAX_INFO_LEN];
-    struct individuo *prox;
-} cromossomo;
+    struct individuo *next;
+} chromosome;
 
-void imprimir_lista (cromossomo * lista);
-void initPopulation (cromossomo * lista);
+void printList (chromosome * list);
+void initPopulation (chromosome * list);
 
-cromossomo * criar_no (int data[MAX_INFO_LEN]);
-cromossomo *criar_lista (int initial_data[]);
-cromossomo *adicionar_lista (cromossomo *head, int data[]);
+chromosome * createNode (int data[MAX_INFO_LEN]);
+chromosome *createList (int initial_data[]);
+chromosome *appendList (chromosome *head, int data[]);
 
 #endif

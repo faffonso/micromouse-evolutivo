@@ -191,14 +191,14 @@ int main(){
 
     // Cria uma tabela do tipo lista
     // Cria uma lista com os cromossomos de cada indíviduo
-    cromossomo * lista;
+    chromosome * lista;
     int vector[MAX_INFO_LEN];
     for (int i = 0; i < MAX_INFO_LEN; i++) {
         vector[i] = rand() %4;
     }
-    lista = criar_lista(vector);
+    lista = createList(vector);
     initPopulation(lista);
-    imprimir_lista(lista);
+    printList(lista);
 
     
    //* TOMAS::
