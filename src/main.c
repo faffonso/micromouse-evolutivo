@@ -8,6 +8,7 @@
 // Definição inicial do tamanho da população e do tamanho do labirinto 
 #define TAMPOP 10
 #define N 33
+#define MUT_TAX 
 
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
 #define MAX_INFO_LEN 10
@@ -170,9 +171,25 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPO
 }
 
 // TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
-// incluindo a predação - GIAN
-int Selection(){
+int Selection(float fitness[TAMPOP], int indiv){
 
+    double maxFit = 0;
+    int maxIteration = 0;
+
+    maxFit = fitness[0];
+
+    for(int i = 1; i <= TAMPOP; i++){
+        if(fitness[i] > maxFit){
+
+            maxFit = fitness[i] ;
+            maxIteration = i;
+        }
+
+        if(i != maxIteration)
+            break;
+    }
+    
+    printf("\nindiv %d: maxFit = %f", indiv, maxFit);
 }
 
 // TODO: Crossover dos cromossomos, lembrando que os do melhor indíviduos são "misturados" com o dos outros
@@ -228,13 +245,13 @@ int main(){
     fprintf(file, "%s", "\n");
     fclose(file);
 
+    for (int i = 0; i < MAX_INFO_LEN; i++)
+        vector[i] = rand() % 4;
+
     list = createList(vector);
     initPopulation(list);
     printList(list);
     MazeCreation(Maze);
-
-    for (int i = 0; i < MAX_INFO_LEN; i++)
-        vector[i] = rand() % 4;
 
     //* MOVE IN MAZE
     int vectorAux[MAX_INFO_LEN];
@@ -263,7 +280,21 @@ int main(){
         FitnessFunction(fitness, vectorAux, Ds, i);
         tmp1 = tmp1->next;
         i++;
+    } i = 0;
+
+    //* SELECTION
+
+    chromosome *tmp2 = list;
+    while (tmp2 != NULL) {
+        
+        for (int j = 0; j < TAMPOP; j++)
+            vectorAux[j] = tmp2->info[j];
+
+        Selection(fitness, i);
+        tmp2 = tmp2->next;
+        i++;
     }
+
     printf("\n");
 
     printList(list);
@@ -273,5 +304,7 @@ int main(){
     fclose(file);
     free(tmp0);
     free(tmp1);
+    free(tmp2);
+
     return 0;
 }
