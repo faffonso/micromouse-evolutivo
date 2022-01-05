@@ -12,7 +12,6 @@
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
 #define MAX_INFO_LEN 10
 
-
 int MazeCreation(int Maze[N][N]){
     
     // 0 = parede, 1 = caminho, 2 = objetivo
@@ -196,7 +195,7 @@ int RearrangePop(){
 
 void manageFile(FILE *file, float fitness[TAMPOP], int gen){
 
-    file = fopen("dados.txt", "a");    
+    file = fopen("data.txt", "a");    
 
     fprintf(file, "%s", "\nGeneration: ");
     fprintf(file, "%d", gen);
@@ -212,21 +211,27 @@ void manageFile(FILE *file, float fitness[TAMPOP], int gen){
 
 int main(){
     
-    chromosome * list;
+    //* DECLARAÇÕES
+    chromosome *list;
     int Maze[N][N];
     int vector[MAX_INFO_LEN];
     float fitness[TAMPOP];
     int Ds[TAMPOP];
     FILE *file;
     
-    file = fopen("dados.txt", "w");
+    file = fopen("data.txt", "w");
     fprintf(file, "%s", "Arquivo de dados do Micromouse Evolutivo\n");
+    fprintf(file, "%s", "TAMPOP = ");
+    fprintf(file, "%d", TAMPOP);
+    fprintf(file, "%s", "\tMAX_INFO_LEN = ");
+    fprintf(file, "%d", MAX_INFO_LEN);
+    fprintf(file, "%s", "\n");
     fclose(file);
 
     list = createList(vector);
-    MazeCreation(Maze);
     initPopulation(list);
     printList(list);
+    MazeCreation(Maze);
 
     for (int i = 0; i < MAX_INFO_LEN; i++)
         vector[i] = rand() % 4;
