@@ -173,21 +173,18 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPO
 // TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
 int Selection(float fitness[TAMPOP], int indiv){
 
-    double maxFit = 0;
-    int maxIteration = 0;
+    float maxFit = 0;
+    unsigned char maxIteration = 0;
 
     maxFit = fitness[0];
 
-    for(int i = 1; i <= TAMPOP; i++){
+    for(int i = 1; i <= TAMPOP; i++)
         if(fitness[i] > maxFit){
 
-            maxFit = fitness[i] ;
+            maxFit = fitness[i];
             maxIteration = i;
         }
-
-        if(i != maxIteration)
-            break;
-    }
+    
     
     printf("\nindiv %d: maxFit = %f", indiv, maxFit);
 }
@@ -228,6 +225,8 @@ void manageFile(FILE *file, float fitness[TAMPOP], int gen){
 
 int main(){
     
+    srand(time(NULL));
+
     //* DECLARAÇÕES
     chromosome *list;
     int Maze[N][N];
