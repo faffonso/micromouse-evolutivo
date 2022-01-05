@@ -3,6 +3,8 @@
 #include <math.h>
 #include <string.h>
 
+#include "../header/linkedList.h"
+
 // Definição inicial do tamanho da população e do tamanho do labirinto 
 #define TAMPOP 10
 #define N 33
@@ -10,70 +12,6 @@
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
 #define MAX_INFO_LEN 10
 
-// Struct indivíduo do tipo cromossomos, contendo informações dos indivíduos 
-typedef struct individuo{
-    int cromossomos[MAX_INFO_LEN];
-    struct individuo *prox;
-} cromossomos;
-
-// Struct indivíduo do tipo lista de indivíduos, formando uma TABELA PORRA
-typedef struct individuo *listaIndividuos;
-
-// Struct do tipo lista com vetor de inteiros, sendo eles os genes 
-typedef struct{
-    // Vetor do tipo lista de indivíduos com a quantidade de genes
-    // necessários para completar o labirinto
-    listaIndividuos *genes;
-} lista;
-
-float fit[TAMPOP]; // fitness para cad individuo
-int generation = 0;
-
-// Cria os genes da lista encadeada (lista de vetores >> matriz), sendo uma função do tipo lista 
-lista *criar_genes(){
-
-    // Aloca dinamicamente o espaço de TAMPOP posições do tamanho de inteiroes para a lista de genes 
-    listaIndividuos *genes = (listaIndividuos *) calloc (TAMPOP, sizeof (listaIndividuos));
-
-    // Retorna os genes da lista 
-    return genes;
-}
-
-// Insere cada gene na lista, formando a lista encadeada
-void inserir_genes(listaIndividuos *genes, int gene){
-
-    int aux;
-
-    // Cria um ponteiro para um novo cromossomo do tipo cromossomo
-    cromossomos *novoCromossomos = (cromossomos *) calloc (MAX_INFO_LEN, sizeof (cromossomos));
-
-    // Copia o valor inteiro que será inserido para o novo cromossomo 
-    aux = novoCromossomos->cromossomos;
-    novoCromossomos->prox = *genes;
-    *genes = novoCromossomos;
-}
-
-// Função do tipo lista que aponta para criar lista, criando a tabela para guardar os vetores de cromossomos
-lista *criar_lista(lista *tabela, int gene){
-
-    // Aloca dinamicamente um espaço de *tantas* posições para o vetor de genes
-    tabela->genes = calloc (1,sizeof (lista));
-
-    // Tabela que atribui os cromossomos da lista de genes 
-    tabela->genes = criar_genes(gene); 
-
-    // Retorna a tabela para a criação e inserção dos genes nos cromossomos de cada indíviduo 
-    return tabela;
-}
-
-// TODO: Iniciar população
-// GIAN
-void initPopulation(lista *tabela, unsigned info){
-    for (int i = 0; i < MAX_INFO_LEN; i++){
-        // Era para inserir os genes de cada indíviduo na tabela, mas por enquanto tá dando erro
-        inserir_genes(&tabela->genes[i], (double) (rand() % 1000));
-    }
-}
 
 // TODO: Criar o labirinto (montar a matriz e o labirinto com as paredes 0 e os espaços livres 1)
 // no começo podemos só usar um labiritno exemplo - TOMAS
@@ -252,20 +190,17 @@ int main(){
     // acho que essa ta funcionando
 
     // Cria uma tabela do tipo lista
-    lista tabela;
-
     // Cria uma lista com os cromossomos de cada indíviduo
-    criar_lista(&tabela, MAX_INFO_LEN);
-
-    printf("\nTabela:\n");
-    for(int i = 0; i < TAMPOP; i++){
-        for(int j = 0; j < MAX_INFO_LEN; j++){
-            tabela.genes[j] = rand() % 4;
-            printf(" %d ", tabela.genes[j]);
-        }
-        printf("\n");
+    cromossomo * lista;
+    int vector[MAX_INFO_LEN];
+    for (int i = 0; i < MAX_INFO_LEN; i++) {
+        vector[i] = rand() %4;
     }
+    lista = criar_lista(vector);
+    initPopulation(lista);
+    imprimir_lista(lista);
 
+    
    //* TOMAS::
 
     int cromossomos[TAMPOP][MAX_INFO_LEN];
