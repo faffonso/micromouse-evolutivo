@@ -15,6 +15,7 @@
 
 int MazeCreation(int Maze[N][N]){
     
+    // 0 = parede, 1 = caminho, 2 = objetivo
     int Maze1[N][N] =  {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
                         {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
@@ -210,87 +211,64 @@ void manageFile(FILE *file, float fitness[TAMPOP], int gen){
 
 
 int main(){
-
-    srand(time(NULL));
     
+    chromosome * list;
     int Maze[N][N];
-
-    MazeCreation(Maze);
-    
-    // 0 = parede, 1 = caminho, 2 = objetivo
-    // acho que essa ta funcionando
-
-    // Cria uma tabela do tipo lista
-    // Cria uma lista com os cromossomos de cada indíviduo
-    chromosome * lista;
     int vector[MAX_INFO_LEN];
-    for (int i = 0; i < MAX_INFO_LEN; i++) {
-        vector[i] = rand() %4;
-    }
-    lista = createList(vector);
-    initPopulation(lista);
-    printList(lista);
-
-    
-   //* TOMAS::
-
-    int cromossomos[TAMPOP][MAX_INFO_LEN];
     float fitness[TAMPOP];
-    int vet_aux[MAX_INFO_LEN];
     int Ds[TAMPOP];
-
     FILE *file;
+    
     file = fopen("dados.txt", "w");
     fprintf(file, "%s", "Arquivo de dados do Micromouse Evolutivo\n");
     fclose(file);
 
+    list = createList(vector);
+    MazeCreation(Maze);
+    initPopulation(list);
+    printList(list);
 
-    printf("\n\n");
-    for(int i = 0; i < TAMPOP; i++){
-        for(int j = 0; j < MAX_INFO_LEN; j++){
-            cromossomos[i][j] = rand() % 4; // numero aleatorio entre 0 e 3
-            printf(" %d ", cromossomos[i][j]);
-        }
-        printf("\n");
-    }
+    for (int i = 0; i < MAX_INFO_LEN; i++)
+        vector[i] = rand() % 4;
 
-
-    int x0 = 1;
-    int y0 = 1;
-
-    // gambiarra, mas no geral passa o a matriz de cromossomos individuo por individuo para o moveInMaze
     //* MOVE IN MAZE
-    for(int i = 0; i < TAMPOP; i++){
-        // copia o vetor pra um aux
-        for(int j = 0; j < MAX_INFO_LEN; j++)
-            vet_aux[j] = cromossomos[i][j];
-        // chama a funcao moveInMaze
-        moveInMaze(Maze, vet_aux, x0, y0, Ds, i);
-        // copia de volta pro cromossomos
-        for(int j = 0; j < MAX_INFO_LEN; j++)
-            cromossomos[i][j] = vet_aux[j];
-    }
+    int vectorAux[MAX_INFO_LEN];
+    chromosome *tmp0 = list;
+    int i=0;
+    while (tmp0 != NULL) {
+        
+        for (int j = 0; j < MAX_INFO_LEN; j++)
+            vectorAux[j] = tmp0->info[j];
+        moveInMaze(Maze, vectorAux, 1, 1, Ds, i);
+        for (int j = 0; j < MAX_INFO_LEN; j++)
+            tmp0->info[j] = vectorAux[j];
+        tmp0 = tmp0->next;
+        i++;
+    } i = 0;
 
+    
     //* FITNESS FUNCTION
-    for(int i = 0; i < TAMPOP; i++){
-        for(int j = 0; j < MAX_INFO_LEN; j++)
-            vet_aux[j] = cromossomos[i][j];
-        FitnessFunction(fitness, vet_aux, Ds, i);
-    }
+    
+    chromosome *tmp1 = list;
+    while (tmp1 != NULL) {
+        
+        for (int j = 0; j < TAMPOP; j++)
+            vectorAux[j] = tmp1->info[j];
 
-    // printa a matriz de individuos atualizada
-    printf("\n\n");
-    for(int i = 0; i < TAMPOP; i++){
-        for(int j = 0; j < MAX_INFO_LEN; j++){
-            printf(" %d ", cromossomos[i][j]);
-        }
-        printf("\n");
+        FitnessFunction(fitness, vectorAux, Ds, i);
+        tmp1 = tmp1->next;
+        i++;
     }
+    printf("\n");
 
+
+
+    printList(list);
     manageFile(file, fitness, 0);
 
     printf("\n");
-
     fclose(file);
+    free(tmp0);
+    free(tmp1);
     return 0;
 }

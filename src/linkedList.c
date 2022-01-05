@@ -6,14 +6,16 @@
 void printList (chromosome *list) {
     chromosome *tmp = list;
     int i=0;
+    printf("\n\n");
     while (tmp != NULL) {
         printf ("Indivíduo %d: ", i);
-            for (int i = 0; i < TAMPOP; i++)
-                printf("%d ", tmp->info[i]);
-            printf("\n");
+        for (int j = 0; j < TAMPOP; j++)
+            printf("%d ", tmp->info[j]);
+        printf("\n");
         tmp = tmp->next;
         i++;
     }
+    printf("\n");
 }
 
 //Função para criar nó da lista ligada
