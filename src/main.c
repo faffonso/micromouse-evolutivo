@@ -171,28 +171,31 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPO
 }
 
 // TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
-void Selection(float fitness[TAMPOP], int indiv){
+void Selection(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int indiv){
 
     float maxFit = 0;
     unsigned char maxIteration = 0;
 
     maxFit = fitness[0];
 
-    for(int i = 1; i <= TAMPOP; i++)
+    for(int i = 0; i <= TAMPOP; i++){
         if(fitness[i] > maxFit){
 
             maxFit = fitness[i];
             maxIteration = i;
         }
-    
-    
+
+        
+
+    }
+
     printf("\nindiv %d: maxFit = %f", indiv, maxFit);
+
 }
 
 // TODO: Crossover dos cromossomos, lembrando que os do melhor indíviduos são "misturados" com o dos outros
 // GIAN
 void Crossover(){
-
 }
 
 // TODO: Mutação dos indíviduos a partir do crossover feito anteriormente
@@ -289,7 +292,7 @@ int main(){
         for (int j = 0; j < TAMPOP; j++)
             vectorAux[j] = tmp2->info[j];
 
-        Selection(fitness, i);
+        Selection(fitness, vectorAux, i);
         tmp2 = tmp2->next;
         i++;
     }
