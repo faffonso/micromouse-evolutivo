@@ -171,7 +171,7 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPO
 }
 
 // TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
-int Selection(float fitness[TAMPOP], int indiv){
+void Selection(float fitness[TAMPOP], int indiv){
 
     float maxFit = 0;
     unsigned char maxIteration = 0;
@@ -191,7 +191,7 @@ int Selection(float fitness[TAMPOP], int indiv){
 
 // TODO: Crossover dos cromossomos, lembrando que os do melhor indíviduos são "misturados" com o dos outros
 // GIAN
-int Crossover(){
+void Crossover(){
 
 }
 
