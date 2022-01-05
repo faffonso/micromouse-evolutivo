@@ -261,8 +261,6 @@ int main(){
     }
     printf("\n");
 
-
-
     printList(list);
     manageFile(file, fitness, 0);
 
