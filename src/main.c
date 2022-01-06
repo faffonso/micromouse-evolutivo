@@ -167,30 +167,46 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPO
 
 
     fitness[indiv] = (100/(D + 1)) - (0.3)*R - (0.1)*B;
-    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
+    //printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
 }
 
-// TODO: Tipo de avaliação que será feita para escolher os melhores indíviduos, no nosso caso é interessante utilizar uma que seja mais elitista
+void bubbleSort(float arr[], int n){ 
+
+    int i, j, aux; 
+
+    for(i = n; i >= 0; i--){
+        for(j = n-i-2; j >= 0; j--){ 
+            if(arr[j+1] > arr[j]){
+                aux = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = aux;
+            }
+        }
+    }
+}
+
+int search(float arr[], int n, float fitness){
+    for (int i = 0; i < n; i++)
+        if (arr[i] == fitness)
+            return i;
+}
+
 void Selection(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int indiv){
 
-    float maxFit = 0;
-    unsigned char maxIteration = 0;
+    float maxFit[TAMPOP/2], vectorAux[TAMPOP/2];
+    int maxIteration[TAMPOP/2], aux;
 
-    maxFit = fitness[0];
+    float test[10] = {1, 4, 5, 6, 7, 12, 15, 2, 4, 0};
 
-    for(int i = 0; i <= TAMPOP; i++){
-        if(fitness[i] > maxFit){
+    for (int i = 0; i < TAMPOP; i++)
+        vectorAux[i] = test[i];
 
-            maxFit = fitness[i];
-            maxIteration = i;
-        }
-
-        
-
+    bubbleSort(vectorAux, TAMPOP);
+    for (int i = 0; i < TAMPOP/2; i++) {
+        aux = search(test, TAMPOP, vectorAux[i]);
+        maxFit[i] = test[aux];
+        maxIteration[i] = aux;
     }
-
-    printf("\nindiv %d: maxFit = %f", indiv, maxFit);
-
 }
 
 // TODO: Crossover dos cromossomos, lembrando que os do melhor indíviduos são "misturados" com o dos outros
