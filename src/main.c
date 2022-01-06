@@ -13,7 +13,7 @@
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
 #define MAX_INFO_LEN 10
 
-int MazeCreation(int Maze[N][N]){
+void MazeCreation(unsigned char Maze[N][N]){
     
     // 0 = parede, 1 = caminho, 2 = objetivo
     int Maze1[N][N] =  {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -90,7 +90,7 @@ int MazeCreation(int Maze[N][N]){
 
 }
 
-void MazePosition(int Maze[N][N], int *x, int *y, int dx, int dy, int *flag, int Ds[TAMPOP], int indiv){
+void MazePosition(unsigned char Maze[N][N], int *x, int *y, int dx, int dy, unsigned char *flag, unsigned char Ds[TAMPOP], int indiv){
     
     // levanta a flag se bateu ou chegou na solução, caso contrario incrementa o passo e continua
     if(Maze[*y + dy][*x + dx] == 0)
@@ -107,13 +107,13 @@ void MazePosition(int Maze[N][N], int *x, int *y, int dx, int dy, int *flag, int
     Ds[indiv] = abs(*x - (N - 1)/2) + abs(*y - (N - 1)/2);
 }
 
-void moveInMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, int Ds[TAMPOP], int indiv){
+void moveInMaze(unsigned char Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, unsigned char Ds[TAMPOP], int indiv){
 
     // flag = 0 ANDANDO, flag = 1 BATEU, flag = 2 CHEGOU
-    int flag;
+    unsigned char flag;
     // Distancia para o cálculo do Fitness, dist = dx + dy (catetos até o meio)
 
-    int gene = 0;
+    unsigned char gene = 0;
     while(gene < MAX_INFO_LEN){
         flag = 0;
         switch (crom[gene]){       
@@ -144,11 +144,11 @@ void moveInMaze(int Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, int Ds[TAM
 }
 
 
-void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPOP], int indiv){
+void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned char Ds[TAMPOP], int indiv){
 
     // meio é em N-1/2 no x e no y
 
-    int B = 0, R = 0, D = Ds[indiv];
+    unsigned char B = 0, R = 0, D = Ds[indiv];
 
 
     int ant = 10, atual = 10;
@@ -167,12 +167,13 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int Ds[TAMPO
 
 
     fitness[indiv] = (100/(D + 1)) - (0.3)*R - (0.1)*B;
-    //printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
+    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
 }
 
 void bubbleSort(float arr[], int n){ 
 
-    int i, j, aux; 
+    int i, j;
+    float aux; 
 
     for(i = n; i >= 0; i--){
         for(j = n-i-2; j >= 0; j--){ 
@@ -185,26 +186,31 @@ void bubbleSort(float arr[], int n){
     }
 }
 
-int search(float arr[], int n, float fitness){
-    for (int i = 0; i < n; i++)
+int search(float arr[], int n, float fitness, int maxIteration[]){
+    int i, j;
+    for (i = 0; i < n; i++)
         if (arr[i] == fitness)
-            return i;
+            for (j = 0; j < n; j++) {
+                if (maxIteration[j] == -1)
+                    return j;
+            }
 }
 
-void Selection(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int indiv){
+void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/2], int moda_data[MAX_INFO_LEN][4]){
 
-    float maxFit[TAMPOP/2], vectorAux[TAMPOP/2];
-    int maxIteration[TAMPOP/2], aux;
-
-    float test[10] = {1, 4, 5, 6, 7, 12, 15, 2, 4, 0};
+    float vectorAux[TAMPOP];
+    int aux;
+    for (int i=0; i < TAMPOP/2; i++) {
+        maxIteration[i] = -1;
+    }
 
     for (int i = 0; i < TAMPOP; i++)
-        vectorAux[i] = test[i];
+        vectorAux[i] = fitness[i];
 
     bubbleSort(vectorAux, TAMPOP);
+
     for (int i = 0; i < TAMPOP/2; i++) {
-        aux = search(test, TAMPOP, vectorAux[i]);
-        maxFit[i] = test[aux];
+        aux = search(fitness, TAMPOP, vectorAux[i], maxIteration);
         maxIteration[i] = aux;
     }
 }
@@ -212,6 +218,7 @@ void Selection(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int indiv){
 // TODO: Crossover dos cromossomos, lembrando que os do melhor indíviduos são "misturados" com o dos outros
 // GIAN
 void Crossover(){
+
 }
 
 // TODO: Mutação dos indíviduos a partir do crossover feito anteriormente
@@ -248,10 +255,10 @@ int main(){
 
     //* DECLARAÇÕES
     chromosome *list;
-    int Maze[N][N];
+    unsigned char Maze[N][N];
     int vector[MAX_INFO_LEN];
     float fitness[TAMPOP];
-    int Ds[TAMPOP];
+    unsigned char Ds[TAMPOP];
     FILE *file;
     
     file = fopen("data.txt", "w");
@@ -272,6 +279,7 @@ int main(){
     MazeCreation(Maze);
 
     //* MOVE IN MAZE
+    
     int vectorAux[MAX_INFO_LEN];
     chromosome *tmp0 = list;
     int i=0;
@@ -302,6 +310,9 @@ int main(){
 
     //* SELECTION
 
+    int maxIteration[TAMPOP/2];
+    int modaData[MAX_INFO_LEN][4];
+    Selection(fitness, maxIteration, modaData);
     chromosome *tmp2 = list;
     while (tmp2 != NULL) {
         
@@ -311,7 +322,7 @@ int main(){
         Selection(fitness, vectorAux, i);
         tmp2 = tmp2->next;
         i++;
-    }
+    } i = 0;
 
     printf("\n");
 
