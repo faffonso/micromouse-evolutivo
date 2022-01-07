@@ -315,6 +315,9 @@ int main(){
 
     int maxIteration[TAMPOP/2];
     int modaData[MAX_INFO_LEN][4];
+    for (int i = 0; i < MAX_INFO_LEN; i++)
+        for (int j = 0; j < 4; j++)
+            moddaData[i][j] = 0;
     Selection(fitness, maxIteration);
     chromosome *tmp2 = list;
     while (tmp2 != NULL) {
