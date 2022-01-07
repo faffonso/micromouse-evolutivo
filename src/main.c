@@ -196,7 +196,7 @@ int search(float arr[], int n, float fitness, int maxIteration[]){
             }
 }
 
-void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/2], int moda_data[MAX_INFO_LEN][4]){
+void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/2]){
 
     float vectorAux[TAMPOP];
     int aux;
@@ -217,8 +217,11 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/2], int moda_data[
 
 // TODO: Crossover dos cromossomos, lembrando que os do melhor indíviduos são "misturados" com o dos outros
 // GIAN
-void Crossover(){
-
+void Crossover(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int modaData[MAX_INFO_LEN][4], ){
+    for (int i = 0; i < MAX_INFO_LEN; i++) {
+        modaData[i][crom[i]]++;
+        printf("Adicionando cromossomo %d, para %d\n", modaData[i][crom[i]], crom[i]);
+    }
 }
 
 // TODO: Mutação dos indíviduos a partir do crossover feito anteriormente
@@ -312,14 +315,17 @@ int main(){
 
     int maxIteration[TAMPOP/2];
     int modaData[MAX_INFO_LEN][4];
-    Selection(fitness, maxIteration, modaData);
+    Selection(fitness, maxIteration);
     chromosome *tmp2 = list;
     while (tmp2 != NULL) {
         
         for (int j = 0; j < TAMPOP; j++)
             vectorAux[j] = tmp2->info[j];
 
-        Selection(fitness, vectorAux, i);
+        for (int j = 0; j < TAMPOP; j++) {
+            if (i == maxIteration[j])
+                Crossover(fitness, vectorAux, modaData);
+        }
         tmp2 = tmp2->next;
         i++;
     } i = 0;
