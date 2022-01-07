@@ -167,7 +167,7 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
 
 
     fitness[indiv] = (100/(D + 1)) - (0.3)*R - (0.1)*B;
-    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
+    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f\n", indiv, D, R, B, fitness[indiv]);
 }
 
 void bubbleSort(float arr[], int n){ 
@@ -187,37 +187,43 @@ void bubbleSort(float arr[], int n){
 }
 
 int search(float arr[], int n, float fitness, int maxIteration[]){
+
     int i, j;
-    for (i = 0; i < n; i++)
-        if (arr[i] == fitness)
-            for (j = 0; j < n; j++) {
-                if (maxIteration[j] == -1)
-                    return j;
-            }
+
+    printf("\n");
+
+    for(i = 0; i < n; i++)
+        if(arr[i] == fitness)
+            for(j = 0; j < n; j++)
+                if(maxIteration[j] == -1)
+                    break;
+
+    return j;
 }
 
 void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/2]){
 
     float vectorAux[TAMPOP];
     int aux;
-    for (int i=0; i < TAMPOP/2; i++) {
+
+    for(int i = 0; i < TAMPOP/2; i++) {
         maxIteration[i] = -1;
     }
 
-    for (int i = 0; i < TAMPOP; i++)
+    for(int i = 0; i < TAMPOP; i++)
         vectorAux[i] = fitness[i];
 
     bubbleSort(vectorAux, TAMPOP);
 
-    for (int i = 0; i < TAMPOP/2; i++) {
+    for(int i = 0; i < TAMPOP/2; i++){
         aux = search(fitness, TAMPOP, vectorAux[i], maxIteration);
         maxIteration[i] = aux;
     }
 }
 
-// TODO: Crossover dos cromossomos, lembrando que os do melhor indíviduos são "misturados" com o dos outros
-// GIAN
 void Crossover(float fitness[TAMPOP], int crom[MAX_INFO_LEN], int modaData[MAX_INFO_LEN][4]){
+
+    printf("\n");
     for (int i = 0; i < MAX_INFO_LEN; i++) {
         modaData[i][crom[i]]++;
         printf("Adicionando cromossomo %d, para %d\n", modaData[i][crom[i]], crom[i]);
@@ -318,17 +324,19 @@ int main(){
     for (int i = 0; i < MAX_INFO_LEN; i++)
         for (int j = 0; j < 4; j++)
             modaData[i][j] = 0;
+
     Selection(fitness, maxIteration);
+
     chromosome *tmp2 = list;
     while (tmp2 != NULL){
         
-        for (int j = 0; j < TAMPOP; j++)
+        for (int j = 0; j < TAMPOP; j++){
             vectorAux[j] = tmp2->info[j];
 
-        for (int j = 0; j < TAMPOP; j++) {
             if (i == maxIteration[j])
                 Crossover(fitness, vectorAux, modaData);
         }
+
         tmp2 = tmp2->next;
         i++;
     } i = 0;
