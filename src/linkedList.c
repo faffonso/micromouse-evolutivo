@@ -75,7 +75,7 @@ chromosome *appendList(chromosome *head, int data[]){
 //Função para iniciar uma população
 void initPopulation(chromosome *list){
 
-    int aux, vectorAux[MAX_INFO_LEN];
+    int vectorAux[MAX_INFO_LEN];
 
     // Armazena um número aleatório entre 0 e 4 no vetor auxiliar
     // para ser guardado na lista de cromossomos
