@@ -358,9 +358,11 @@ int main(){
     chromosome *tmp2 = list;
     while (i < 9){
         for (int j = 0; j < TAMPOP/2; j++) {
-            if (i == maxIteration[j]) ModaData(vectorAux, modaData);
+            if (i == maxIteration[j]) {
+                for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp2->info[k];
+                ModaData(vectorAux, modaData);
+            }
         }
-        for (int j = 0; j < MAX_INFO_LEN; j++) vectorAux[j] = tmp2->info[j];
 
         tmp2 = tmp2->next;
         i++;
