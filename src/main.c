@@ -382,6 +382,7 @@ int main(){
     printf("\n");
 
     //* Crossover e Mutação
+    /* NÃO TA FUNCIONANDO POR ENQUANTO
     chromosome *tmp3 = list;
     int flagCrossover, flag = 5;
     while (tmp3 != NULL){
@@ -400,7 +401,7 @@ int main(){
         tmp3 = tmp3->next;
         i++;
     } i = 0;
-
+    */
     //printf("\n");
 
     printList(list);
@@ -411,7 +412,7 @@ int main(){
     free(tmp0);
     free(tmp1);
     free(tmp2);
-    free(tmp3);
+    //free(tmp3);
 
     return 0;
 }
