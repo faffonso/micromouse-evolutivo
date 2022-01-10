@@ -356,7 +356,7 @@ int main(){
             modaData[i][j] = 0;
     
     chromosome *tmp2 = list;
-    while (i < 9){
+    while (tmp2 != NULL){
         for (int j = 0; j < TAMPOP/2; j++) {
             if (i == maxIteration[j]) {
                 for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp2->info[k];
