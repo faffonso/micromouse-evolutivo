@@ -235,6 +235,7 @@ void Moda (int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]) {
     for (int i = 0; i < MAX_INFO_LEN; i++) {
         for (int j = 0; j < 4; j++) {
             //! Randomizar se tiver valorese iguais
+            // sugestão: esclher a soma com mais fitness
             if (modaData[i][j] > modaData[i][moda[i]]) moda[i] = j;
         }
     }
@@ -252,34 +253,59 @@ void Crossover(int vectorAux[], int moda[], int flag){
     for (int i = flag; i < MAX_INFO_LEN; i++) vectorAux[i] = rand() % 4;
 }
 
-// TODO: Mutação dos indíviduos a partir do crossover feito anteriormente
-// GIAN
-int Mutation(int vectorAux[]){
-    for (int i = 0; i < MAX_INFO_LEN; i++) {
-        if (vectorAux[i] > 3) vectorAux[i] = rand() % 4;
-    }
-}
-
 // TODO: Rearranja população mutada para o início de uma nova geração 
 // GIAN 
-int RearrangePop(){
-
+int RearrangePop(int vectorAux[]){
+    for (int i = 0; i < MAX_INFO_LEN; i++)
+        if (vectorAux[i] > 3) vectorAux[i] = rand() % 4;
+    
 }
 
-void manageFile(FILE *file, float fitness[TAMPOP], int gen){
+void manageFile(float fitness[TAMPOP], int gen, int header){
 
-    file = fopen("data.txt", "a");    
+    // Use strcat to create a relative file path
+    char path[1000] = { };
+    // strcat(path, "./home/tommaselli/Documentos/c_projects/Sistemas_evolutivos/");
+    strcat(path, "");
+    strcat(path, "data.txt");
 
-    fprintf(file, "%s", "\nGeneration: ");
-    fprintf(file, "%d", gen);
-    fprintf(file, "%s", "\n\n");
+    // Open the file
+    FILE *file;
+    
+    printf("\nPATH = %s", path);
+    file = fopen(path, "r" );
+    if (!file){
+        printf("\nFailed to open text file\n");
+        exit(1);
+    }
+    fclose(file);
+    
+    if(header == 1){
+        file = fopen(path, "w");
+        fprintf(file, "%s", "Arquivo de dados do Micromouse Evolutivo\n");
+        fprintf(file, "%s", "TAMPOP = ");
+        fprintf(file, "%d", TAMPOP);
+        fprintf(file, "%s", "\tMAX_INFO_LEN = ");
+        fprintf(file, "%d", MAX_INFO_LEN);
+        fprintf(file, "%s", "\n");
+        fclose(file);
+    }
+    else{
+        file = fopen(path, "a");    
 
+        fprintf(file, "%s", "\nGeneration: ");
+        fprintf(file, "%d", gen);
+        fprintf(file, "%s", "\n\n");
 
-    for(int i=0; i < TAMPOP; i++){
-        fprintf(file, "%.2f", fitness[i]);    
-        fprintf(file, "%s", " ");
+        for(int i=0; i < TAMPOP; i++){
+            fprintf(file, "%.2f", fitness[i]);    
+            fprintf(file, "%s", " ");
+        }
+        fclose(file);
     }
 }
+
+
 
 
 int main(){
@@ -292,16 +318,9 @@ int main(){
     int vector[MAX_INFO_LEN];
     float fitness[TAMPOP];
     unsigned char Ds[TAMPOP];
-    FILE *file;
     
-    file = fopen("data.txt", "w");
-    fprintf(file, "%s", "Arquivo de dados do Micromouse Evolutivo\n");
-    fprintf(file, "%s", "TAMPOP = ");
-    fprintf(file, "%d", TAMPOP);
-    fprintf(file, "%s", "\tMAX_INFO_LEN = ");
-    fprintf(file, "%d", MAX_INFO_LEN);
-    fprintf(file, "%s", "\n");
-    fclose(file);
+    manageFile(fitness, 0, 1);
+
 
     for (int i = 0; i < MAX_INFO_LEN; i++)
         vector[i] = rand() % 4;
@@ -383,8 +402,9 @@ int main(){
     for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
     printf("\n");
 
+    printList(list);
+
     //* Crossover e Mutação
-    /* NÃO TA FUNCIONANDO POR ENQUANTO
     chromosome *tmp3 = list;
     int flagCrossover, flag = 5;
     while (tmp3 != NULL){
@@ -397,24 +417,23 @@ int main(){
             }
         } else {
             for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp3->info[k];
-            Mutation(vectorAux);
+            RearrangePop(vectorAux);
             for (int k = 0; k < MAX_INFO_LEN; k++) tmp3->info[k] = vectorAux[k];
         }
         tmp3 = tmp3->next;
         i++;
     } i = 0;
-    */
+
     //printf("\n");
 
     printList(list);
-    manageFile(file, fitness, 0);
+    manageFile(fitness, 0, 0);
 
     printf("\n");
-    fclose(file);
     free(tmp0);
     free(tmp1);
     free(tmp2);
-    //free(tmp3);
+    free(tmp3);
 
     return 0;
 }
