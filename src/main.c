@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <unistd.h> 
 
 #include "../header/linkedList.h"
 
@@ -263,16 +264,16 @@ int RearrangePop(int vectorAux[]){
 
 void manageFile(float fitness[TAMPOP], int gen, int header){
 
-    // Use strcat to create a relative file path
+    // relative file path
+    
     char path[1000] = { };
-    // strcat(path, "./home/tommaselli/Documentos/c_projects/Sistemas_evolutivos/");
-    strcat(path, "");
+    strcat(path, ""); // in case we want to use a different relative path
     strcat(path, "data.txt");
 
     // Open the file
     FILE *file;
     
-    printf("\nPATH = %s", path);
+    chdir("src"); // change working directory to file manipulation
     file = fopen(path, "r" );
     if (!file){
         printf("\nFailed to open text file\n");
@@ -303,10 +304,8 @@ void manageFile(float fitness[TAMPOP], int gen, int header){
         }
         fclose(file);
     }
+    chdir("..");
 }
-
-
-
 
 int main(){
     
