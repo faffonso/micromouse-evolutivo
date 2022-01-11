@@ -7,12 +7,12 @@
 #include "../header/linkedList.h"
 
 // Definição inicial do tamanho da população e do tamanho do labirinto 
-#define TAMPOP 10
+#define TAMPOP 100
 #define N 33
 #define MUT_TAX 
 
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
-#define MAX_INFO_LEN 10
+#define MAX_INFO_LEN 300
 
 int gen = 0;
 
@@ -95,8 +95,11 @@ void MazeCreation(unsigned char Maze[N][N]){
 
 void MazePosition(unsigned char Maze[N][N], int *x, int *y, int dx, int dy, unsigned char *flag, unsigned char Ds[TAMPOP], int indiv){
     
+    if((*x + dx) < 0 || (*y + dy) < 0)
+        *flag = 1;
+
     // levanta a flag se bateu ou chegou na solução, caso contrario incrementa o passo e continua
-    if(Maze[*y + dy][*x + dx] == 0)
+    if((Maze[*y + dy][*x + dx] == 0))
         *flag = 1;
     else if(Maze[*y + dy][*x + dx] == 2)
         *flag = 2;
@@ -137,13 +140,16 @@ void moveInMaze(unsigned char Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, 
             break;
         gene++;    
     }
-    if(flag == 1)
+    if(flag == 1){
+        crom[gene] = 4;
         for(int m = gene + 1; m < MAX_INFO_LEN; m++)
             crom[m] = 5;
+    }
 
     if(flag == 2)
         for(int m = gene + 1; m < MAX_INFO_LEN; m++)
             crom[m] = 6;
+    
 }
 
 
@@ -165,9 +171,8 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
             break;
         }
 
-
-    fitness[indiv] = (80/(D + 1)) - (0.3)*R + (0.1)*B;
-    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f\n", indiv, D, R, B, fitness[indiv]);
+    fitness[indiv] = (90/(D + 1)) - (0.05)*R + (0.1)*B;
+    printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
 }
 
 void bubbleSort(float arr[], int n){ 
@@ -241,23 +246,27 @@ void Moda (int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]) {
     }
 }
 
-void Crossover(int vectorAux[], int moda[], int flag){
+void Crossover(int crom[], int moda[], int gen){
 
     float x;
 
-    for (int i = 0; i < flag; i++){
+    for (int i = 0; i < gen; i++){
         x = rand() % 101;
-        x /= 100;
-        if (x < 0.75) vectorAux[i] = moda[i];
-        else vectorAux[i] = rand() % 4;
+        //printf("\ncrom[i] = %d, moda[i] = %d, x = %f", crom[i], moda[i], x);
+        if (x < 85)
+            crom[i] = moda[i];
+        else
+            crom[i] = rand() % 4;
     }
-    for (int i = flag; i < MAX_INFO_LEN; i++) vectorAux[i] = rand() % 4;
+    for (int i = gen; i < MAX_INFO_LEN; i++) 
+        crom[i] = rand() % 4;
 }
 
 // TODO: Rearranja população mutada para o início de uma nova geração  
-void RearrangePop(int vectorAux[]){
+void RearrangePop(int crom[]){
     for (int i = 0; i < MAX_INFO_LEN; i++)
-        if (vectorAux[i] > 3) vectorAux[i] = rand() % 4;
+        if (crom[i] > 3)
+            crom[i] = rand() % 4;
     
 }
 
@@ -301,6 +310,7 @@ void manageFile(float fitness[TAMPOP], int gen, int header){
             fprintf(file, "%.2f", fitness[i]);    
             fprintf(file, "%s", " ");
         }
+        fprintf(file, "%s", "\n");
         fclose(file);
     }
     chdir("..");
@@ -324,17 +334,17 @@ int main(){
 
     list = createList(vector);
     initPopulation(list);
-    printList(list);
     MazeCreation(Maze);
 
-    //* MOVE IN MAZE
-    
-    for(int aux = 0; aux < 10; aux++){
+
+    //* GERACOES
+    for(int aux = 0; aux < 200; aux++){
 
         printf("Generation %d\n",gen);
 
-        printList(list);
+        // printList(list);
 
+        //* MOVE IN MAZE
         int vectorAux[MAX_INFO_LEN];
         chromosome *tmp0 = list;
         int i = 0;
@@ -349,7 +359,6 @@ int main(){
             i++;
         } i = 0;
 
-        
         //* FITNESS FUNCTION
         
         chromosome *tmp1 = list;
@@ -367,7 +376,7 @@ int main(){
 
         int maxIteration[TAMPOP/2];
         Selection(fitness, maxIteration);
-        printf("\nFITNESS\n");
+        printf("\nMELHORES DE TODOS\n");
         for (int i = 0; i < TAMPOP/2; i++) printf("%d ", maxIteration[i]);
         printf("\n");    
 
@@ -392,45 +401,49 @@ int main(){
         int moda[MAX_INFO_LEN];
         Moda (modaData, moda);
 
-        printf("\nTABELA\n");
+        /* printf("\nTABELA\n");
         for (int i = 0; i < MAX_INFO_LEN; i++) {
             for (int j = 0; j < 4; j++) {
                 printf ("%d ", modaData[i][j]);
             }
             printf("\n");
-        }
-        printf("\n");
+        } */
 
-        printf("\nMODA\n");
-        for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
-        printf("\n");
+        // printf("\nMODA\n");
+        // for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
+        // printf("\n");
 
-        printList(list);
+        // printf("\nAntes do CROSSOVER");
+        // printList(list);
 
         //* Crossover e Mutação
         chromosome *tmp3 = list;
         int flagCrossover;
         while (tmp3 != NULL){
             flagCrossover = 0;
-            for (int j = 0; j < TAMPOP/2; j++) if(i == maxIteration[j]) flagCrossover = 1;
-            if (flagCrossover == 0) {
+            for (int j = 0; j < TAMPOP/2; j++) 
+                if(i == maxIteration[j]) 
+                    flagCrossover = 1;
+            if (flagCrossover == 0){
                 Crossover(vectorAux, moda, gen);
-                for (int k = 0; k < MAX_INFO_LEN; k++) {
-                tmp3->info[k] = vectorAux[k];
+                for (int k = 0; k < MAX_INFO_LEN; k++){
+                    tmp3->info[k] = vectorAux[k];
                 }
             } else {
-                for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp3->info[k];
+                for (int k = 0; k < MAX_INFO_LEN; k++) 
+                    vectorAux[k] = tmp3->info[k];
                 RearrangePop(vectorAux);
-                for (int k = 0; k < MAX_INFO_LEN; k++) tmp3->info[k] = vectorAux[k];
+                for (int k = 0; k < MAX_INFO_LEN; k++) 
+                    tmp3->info[k] = vectorAux[k];
             }
             tmp3 = tmp3->next;
             i++;
         } i = 0;
 
-        //printf("\n");
+        manageFile(fitness, gen, 0);
 
-        printList(list);
-        manageFile(fitness, 0, 0);
+        // printf("\nDEPOIS DO CROSSOVER");
+        // printList(list);
 
         printf("\n");
         free(tmp0);
