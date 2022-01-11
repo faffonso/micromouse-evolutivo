@@ -10,6 +10,8 @@
 #define TAMPOP 100
 #define N 33
 #define MUT_TAX 
+#define DIV 2
+
 
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
 #define MAX_INFO_LEN 300
@@ -198,7 +200,7 @@ void search(float arr[TAMPOP], int n, float fitness, int maxIteration[], int ind
     for(i = 0; i < n; i++) {
         flag = 0;
         if(arr[i] == fitness) {
-            for(j = 0; j < n/2; j++) {
+            for(j = 0; j < n/DIV; j++) {
                 if(maxIteration[j] == i) {
                     flag = 1;
                 }
@@ -208,11 +210,11 @@ void search(float arr[TAMPOP], int n, float fitness, int maxIteration[], int ind
     }
 }
 
-void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/2]){
+void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/10]){
 
     float vectorAux[TAMPOP];
 
-    for(int i = 0; i < TAMPOP/2; i++)
+    for(int i = 0; i < TAMPOP/DIV; i++)
         maxIteration[i] = -1;
 
     for(int i = 0; i < TAMPOP; i++)
@@ -220,7 +222,7 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/2]){
 
     bubbleSort(vectorAux, TAMPOP);
 
-    for(int i = 0; i < TAMPOP/2; i++) search(fitness, TAMPOP, vectorAux[i], maxIteration, i);
+    for(int i = 0; i < TAMPOP/DIV; i++) search(fitness, TAMPOP, vectorAux[i], maxIteration, i);
     
 }
 
@@ -374,10 +376,10 @@ int main(){
 
         //* SELECTION
 
-        int maxIteration[TAMPOP/2];
+        int maxIteration[TAMPOP/DIV];
         Selection(fitness, maxIteration);
         printf("\nMELHORES DE TODOS\n");
-        for (int i = 0; i < TAMPOP/2; i++) printf("%d ", maxIteration[i]);
+        for (int i = 0; i < TAMPOP/DIV; i++) printf("%d ", maxIteration[i]);
         printf("\n");    
 
         //* MODA
@@ -388,7 +390,7 @@ int main(){
         
         chromosome *tmp2 = list;
         while (tmp2 != NULL){
-            for (int j = 0; j < TAMPOP/2; j++) {
+            for (int j = 0; j < TAMPOP/DIV; j++) {
                 if (i == maxIteration[j]) {
                     for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp2->info[k];
                     ModaData(vectorAux, modaData);
@@ -421,7 +423,7 @@ int main(){
         int flagCrossover;
         while (tmp3 != NULL){
             flagCrossover = 0;
-            for (int j = 0; j < TAMPOP/2; j++) 
+            for (int j = 0; j < TAMPOP/DIV; j++) 
                 if(i == maxIteration[j]) 
                     flagCrossover = 1;
             if (flagCrossover == 0){
