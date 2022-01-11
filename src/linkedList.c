@@ -8,13 +8,13 @@ void printList(chromosome *list){
     // Cria uma struct temporária para armazenar os elementos da lista principal
     chromosome *tmp = list;
 
-    int i=0;
+    int i = 0;
     
     // Enquanto não houverem elementos "NULL" a lista continuará printando cada elemento
     printf("\n\n");
     while (tmp != NULL) {
         printf ("Indivíduo %d: ", i);
-        for (int j = 0; j < TAMPOP; j++)
+        for (int j = 0; j < MAX_INFO_LEN; j++)
             printf("%d ", tmp->info[j]);
         printf("\n");
 
