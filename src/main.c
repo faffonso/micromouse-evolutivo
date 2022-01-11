@@ -147,10 +147,7 @@ void moveInMaze(unsigned char Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, 
 
 void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned char Ds[TAMPOP], int indiv){
 
-    // meio é em N-1/2 no x e no y
-
     unsigned char B = 0, R = 0, D = Ds[indiv];
-
 
     int ant = 10, atual = 10;
     for(int i = 0; i < MAX_INFO_LEN; i++){
