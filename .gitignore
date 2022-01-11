@@ -1,5 +1,6 @@
 .vscode/
 linkedList.d
 main.d
+maze.d
 data.txt
-MicroMouse_evolutivo
+MicroMouse_evolutivos
