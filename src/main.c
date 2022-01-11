@@ -7,7 +7,7 @@
 #include "../header/linkedList.h"
 
 // Definição inicial do tamanho da população e do tamanho do labirinto 
-#define TAMPOP 100
+#define TAMPOP 50
 #define N 33
 #define MUT_TAX 
 #define DIV 2
@@ -248,6 +248,7 @@ void Moda (int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]) {
     }
 }
 
+// para os NAO melhores de todos
 void Crossover(int crom[], int moda[], int gen){
 
     float x;
@@ -264,7 +265,7 @@ void Crossover(int crom[], int moda[], int gen){
         crom[i] = rand() % 4;
 }
 
-// TODO: Rearranja população mutada para o início de uma nova geração  
+// para os melhores de todos
 void RearrangePop(int crom[]){
     for (int i = 0; i < MAX_INFO_LEN; i++)
         if (crom[i] > 3)
@@ -272,13 +273,13 @@ void RearrangePop(int crom[]){
     
 }
 
-void manageFile(float fitness[TAMPOP], int gen, int header){
+void manageFitnessFile(float fitness[TAMPOP], int gen, int header){
 
     // relative file path
     
     char path[1000] = { };
     strcat(path, ""); // in case we want to use a different relative path
-    strcat(path, "data.txt");
+    strcat(path, "data_fitness.txt");
 
     // Open the file
     FILE *file;
@@ -293,7 +294,7 @@ void manageFile(float fitness[TAMPOP], int gen, int header){
     
     if(header == 1){
         file = fopen(path, "w");
-        fprintf(file, "%s", "Arquivo de dados do Micromouse Evolutivo\n");
+        fprintf(file, "%s", "Arquivo de dados do FITNESS do Micromouse Evolutivo\n");
         fprintf(file, "%s", "TAMPOP = ");
         fprintf(file, "%d", TAMPOP);
         fprintf(file, "%s", "\tMAX_INFO_LEN = ");
@@ -318,6 +319,62 @@ void manageFile(float fitness[TAMPOP], int gen, int header){
     chdir("..");
 }
 
+void manageJSFile(int crom[MAX_INFO_LEN], int indiv, int gen, int header){
+
+    // relative file path
+    char path[1000] = { };
+    strcat(path, ""); // in case we want to use a different relative path
+    strcat(path, "data_JS.txt");
+
+    // Open the file
+    FILE *file;
+    
+    chdir("src"); // change working directory to file manipulation
+    file = fopen(path, "r" );
+    if (!file){
+        printf("\nFailed to open text file\n");
+        exit(1);
+    }
+    fclose(file);
+    
+    // header = 1: Cabecalho, header = 0: adicionar indv, header 2: preparar prox geracao
+    if(header == 1){
+        file = fopen(path, "w");
+        fprintf(file, "%s", "Arquivo de dados dos CROMOSSOMOS do Micromouse Evolutivo\n");
+        fprintf(file, "%s", "TAMPOP = ");
+        fprintf(file, "%d", TAMPOP);
+        fprintf(file, "%s", "\tMAX_INFO_LEN = ");
+        fprintf(file, "%d", MAX_INFO_LEN);
+        fprintf(file, "%s", "\n");
+
+        fprintf(file, "%s", "\nGeneration: 0\n\n");
+        fclose(file);
+    }
+    else if(header == 0){
+        file = fopen(path, "a");    
+
+        fprintf(file, "%s", "indiv ");
+        fprintf(file, "%d", indiv);
+        fprintf(file, "%s", ":    ");
+
+        for(int i=0; i < MAX_INFO_LEN; i++){
+            fprintf(file, "%d", crom[i]);    
+            fprintf(file, "%s", " ");
+        }
+        fprintf(file, "%s", "\n");
+        fclose(file);
+    }
+    else if(header == 2){
+        file = fopen(path, "a"); 
+        printf("\nNO JS FILE");
+        fprintf(file, "%s", "\nGeneration: ");
+        fprintf(file, "%d", gen);
+        fprintf(file, "%s", "\n\n");
+        fclose(file);
+    }
+    chdir("..");
+}
+
 int main(){
     
     srand(time(NULL));
@@ -329,7 +386,8 @@ int main(){
     float fitness[TAMPOP];
     unsigned char Ds[TAMPOP];
     
-    manageFile(fitness, 0, 1);
+    manageFitnessFile(fitness, 0, 1);
+    manageJSFile(fitness, 0, 0, 1);
 
     for (int i = 0; i < MAX_INFO_LEN; i++)
         vector[i] = rand() % 4;
@@ -340,7 +398,7 @@ int main(){
 
 
     //* GERACOES
-    for(int aux = 0; aux < 200; aux++){
+    for(int aux = 0; aux < 50; aux++){
 
         printf("Generation %d\n",gen);
 
@@ -355,11 +413,14 @@ int main(){
             for (int j = 0; j < MAX_INFO_LEN; j++)
                 vectorAux[j] = tmp0->info[j];
             moveInMaze(Maze, vectorAux, 1, 1, Ds, i);
+            manageJSFile(vectorAux, i, gen, 0);
             for (int j = 0; j < MAX_INFO_LEN; j++)
                 tmp0->info[j] = vectorAux[j];
             tmp0 = tmp0->next;
             i++;
         } i = 0;
+        printf("\nPRE MANAGEJSFILE");
+        manageJSFile(vectorAux, 0, gen, 2);
 
         //* FITNESS FUNCTION
         
@@ -378,9 +439,9 @@ int main(){
 
         int maxIteration[TAMPOP/DIV];
         Selection(fitness, maxIteration);
-        printf("\nMELHORES DE TODOS\n");
-        for (int i = 0; i < TAMPOP/DIV; i++) printf("%d ", maxIteration[i]);
-        printf("\n");    
+        // printf("\nMELHORES DE TODOS\n");
+        // for (int i = 0; i < TAMPOP/DIV; i++) printf("%d ", maxIteration[i]);
+        // printf("\n");    
 
         //* MODA
         int modaData[MAX_INFO_LEN][4];
@@ -425,16 +486,16 @@ int main(){
             flagCrossover = 0;
             for (int j = 0; j < TAMPOP/DIV; j++) 
                 if(i == maxIteration[j]) 
-                    flagCrossover = 1;
+                    flagCrossover = 1; // ta nos melhores de todos
             if (flagCrossover == 0){
-                Crossover(vectorAux, moda, gen);
+                Crossover(vectorAux, moda, gen); // crossover nos não melhores de todos
                 for (int k = 0; k < MAX_INFO_LEN; k++){
                     tmp3->info[k] = vectorAux[k];
                 }
             } else {
                 for (int k = 0; k < MAX_INFO_LEN; k++) 
                     vectorAux[k] = tmp3->info[k];
-                RearrangePop(vectorAux);
+                RearrangePop(vectorAux); // RearranjaPop nos melhores melhores de todos
                 for (int k = 0; k < MAX_INFO_LEN; k++) 
                     tmp3->info[k] = vectorAux[k];
             }
@@ -442,7 +503,7 @@ int main(){
             i++;
         } i = 0;
 
-        manageFile(fitness, gen, 0);
+        manageFitnessFile(fitness, gen, 0);
 
         // printf("\nDEPOIS DO CROSSOVER");
         // printList(list);
