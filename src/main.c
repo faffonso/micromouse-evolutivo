@@ -14,6 +14,8 @@
 // Número de informações máxima (movimentos para chegar na solução) presentes em um cromossomo 
 #define MAX_INFO_LEN 10
 
+int gen = 0;
+
 void MazeCreation(unsigned char Maze[N][N]){
     
     // 0 = parede, 1 = caminho, 2 = objetivo
@@ -151,7 +153,6 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
 
     unsigned char B = 0, R = 0, D = Ds[indiv];
 
-
     int ant = 10, atual = 10;
     for(int i = 0; i < MAX_INFO_LEN; i++){
         atual = crom[i];
@@ -167,7 +168,7 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
         }
 
 
-    fitness[indiv] = (100/(D + 1)) - (0.3)*R - (0.1)*B;
+    fitness[indiv] = (80/(D + 1)) - (0.3)*R + (0.1)*B;
     printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f\n", indiv, D, R, B, fitness[indiv]);
 }
 
@@ -237,15 +238,16 @@ void Moda (int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]) {
         for (int j = 0; j < 4; j++) {
             //! Randomizar se tiver valorese iguais
             // sugestão: esclher a soma com mais fitness
-            if (modaData[i][j] > modaData[i][moda[i]]) moda[i] = j;
+            if(modaData[i][j] > modaData[i][moda[i]]) moda[i] = j;
         }
     }
 }
 
 void Crossover(int vectorAux[], int moda[], int flag){
+
     float x;
 
-    for (int i = 0; i < flag; i++) {
+    for (int i = 0; i < flag; i++){
         x = rand() % 101;
         x /= 100;
         if (x < 0.75) vectorAux[i] = moda[i];
@@ -254,9 +256,8 @@ void Crossover(int vectorAux[], int moda[], int flag){
     for (int i = flag; i < MAX_INFO_LEN; i++) vectorAux[i] = rand() % 4;
 }
 
-// TODO: Rearranja população mutada para o início de uma nova geração 
-// GIAN 
-int RearrangePop(int vectorAux[]){
+// TODO: Rearranja população mutada para o início de uma nova geração  
+void RearrangePop(int vectorAux[]){
     for (int i = 0; i < MAX_INFO_LEN; i++)
         if (vectorAux[i] > 3) vectorAux[i] = rand() % 4;
     
@@ -320,7 +321,6 @@ int main(){
     
     manageFile(fitness, 0, 1);
 
-
     for (int i = 0; i < MAX_INFO_LEN; i++)
         vector[i] = rand() % 4;
 
@@ -331,108 +331,117 @@ int main(){
 
     //* MOVE IN MAZE
     
-    int vectorAux[MAX_INFO_LEN];
-    chromosome *tmp0 = list;
-    int i=0;
-    while (tmp0 != NULL) {
+    for(int aux = 0; aux < 10; aux++){
+
+        printf("Generation %d\n",gen);
+
+        printList(list);
+
+        int vectorAux[MAX_INFO_LEN];
+        chromosome *tmp0 = list;
+        int i = 0;
+        while (tmp0 != NULL) {
+            
+            for (int j = 0; j < MAX_INFO_LEN; j++)
+                vectorAux[j] = tmp0->info[j];
+            moveInMaze(Maze, vectorAux, 1, 1, Ds, i);
+            for (int j = 0; j < MAX_INFO_LEN; j++)
+                tmp0->info[j] = vectorAux[j];
+            tmp0 = tmp0->next;
+            i++;
+        } i = 0;
+
         
-        for (int j = 0; j < MAX_INFO_LEN; j++)
-            vectorAux[j] = tmp0->info[j];
-        moveInMaze(Maze, vectorAux, 1, 1, Ds, i);
-        for (int j = 0; j < MAX_INFO_LEN; j++)
-            tmp0->info[j] = vectorAux[j];
-        tmp0 = tmp0->next;
-        i++;
-    } i = 0;
-
-    
-    //* FITNESS FUNCTION
-    
-    chromosome *tmp1 = list;
-    while (tmp1 != NULL) {
+        //* FITNESS FUNCTION
         
-        for (int j = 0; j < TAMPOP; j++)
-            vectorAux[j] = tmp1->info[j];
+        chromosome *tmp1 = list;
+        while (tmp1 != NULL) {
+            
+            for (int j = 0; j < TAMPOP; j++)
+                vectorAux[j] = tmp1->info[j];
 
-        FitnessFunction(fitness, vectorAux, Ds, i);
-        tmp1 = tmp1->next;
-        i++;
-    } i = 0;
+            FitnessFunction(fitness, vectorAux, Ds, i);
+            tmp1 = tmp1->next;
+            i++;
+        } i = 0;
 
-    //* SELECTION
+        //* SELECTION
 
-    int maxIteration[TAMPOP/2];
-    Selection(fitness, maxIteration);
-    printf("\nFITNESS\n");
-    for (int i = 0; i < TAMPOP/2; i++) printf("%d ", maxIteration[i]);
-    printf("\n");    
+        int maxIteration[TAMPOP/2];
+        Selection(fitness, maxIteration);
+        printf("\nFITNESS\n");
+        for (int i = 0; i < TAMPOP/2; i++) printf("%d ", maxIteration[i]);
+        printf("\n");    
 
-    //* MODA
-    int modaData[MAX_INFO_LEN][4];
-    for (int i = 0; i < MAX_INFO_LEN; i++)
-        for (int j = 0; j < 4; j++)
-            modaData[i][j] = 0;
-    
-    chromosome *tmp2 = list;
-    while (tmp2 != NULL){
-        for (int j = 0; j < TAMPOP/2; j++) {
-            if (i == maxIteration[j]) {
-                for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp2->info[k];
-                ModaData(vectorAux, modaData);
+        //* MODA
+        int modaData[MAX_INFO_LEN][4];
+        for (int i = 0; i < MAX_INFO_LEN; i++)
+            for (int j = 0; j < 4; j++)
+                modaData[i][j] = 0;
+        
+        chromosome *tmp2 = list;
+        while (tmp2 != NULL){
+            for (int j = 0; j < TAMPOP/2; j++) {
+                if (i == maxIteration[j]) {
+                    for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp2->info[k];
+                    ModaData(vectorAux, modaData);
+                }
             }
-        }
 
-        tmp2 = tmp2->next;
-        i++;
-    } i = 0;
-    int moda[MAX_INFO_LEN];
-    Moda (modaData, moda);
+            tmp2 = tmp2->next;
+            i++;
+        } i = 0;
+        int moda[MAX_INFO_LEN];
+        Moda (modaData, moda);
 
-    printf("\nTABELA\n");
-    for (int i = 0; i < MAX_INFO_LEN; i++) {
-        for (int j = 0; j < 4; j++) {
-            printf ("%d ", modaData[i][j]);
+        printf("\nTABELA\n");
+        for (int i = 0; i < MAX_INFO_LEN; i++) {
+            for (int j = 0; j < 4; j++) {
+                printf ("%d ", modaData[i][j]);
+            }
+            printf("\n");
         }
         printf("\n");
-    }
-    printf("\n");
 
-    printf("\nMODA\n");
-    for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
-    printf("\n");
+        printf("\nMODA\n");
+        for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
+        printf("\n");
 
-    printList(list);
+        printList(list);
 
-    //* Crossover e Mutação
-    chromosome *tmp3 = list;
-    int flagCrossover, flag = 5;
-    while (tmp3 != NULL){
-        flagCrossover = 0;
-        for (int j = 0; j < TAMPOP/2; j++) if(i == maxIteration[j]) flagCrossover = 1;
-        if (flagCrossover == 0) {
-            Crossover(vectorAux, moda, flag);
-            for (int k = 0; k < MAX_INFO_LEN; k++) {
-            tmp3->info[k] = vectorAux[k];
+        //* Crossover e Mutação
+        chromosome *tmp3 = list;
+        int flagCrossover;
+        while (tmp3 != NULL){
+            flagCrossover = 0;
+            for (int j = 0; j < TAMPOP/2; j++) if(i == maxIteration[j]) flagCrossover = 1;
+            if (flagCrossover == 0) {
+                Crossover(vectorAux, moda, gen);
+                for (int k = 0; k < MAX_INFO_LEN; k++) {
+                tmp3->info[k] = vectorAux[k];
+                }
+            } else {
+                for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp3->info[k];
+                RearrangePop(vectorAux);
+                for (int k = 0; k < MAX_INFO_LEN; k++) tmp3->info[k] = vectorAux[k];
             }
-        } else {
-            for (int k = 0; k < MAX_INFO_LEN; k++) vectorAux[k] = tmp3->info[k];
-            RearrangePop(vectorAux);
-            for (int k = 0; k < MAX_INFO_LEN; k++) tmp3->info[k] = vectorAux[k];
-        }
-        tmp3 = tmp3->next;
-        i++;
-    } i = 0;
+            tmp3 = tmp3->next;
+            i++;
+        } i = 0;
 
-    //printf("\n");
+        //printf("\n");
 
-    printList(list);
-    manageFile(fitness, 0, 0);
+        printList(list);
+        manageFile(fitness, 0, 0);
 
-    printf("\n");
-    free(tmp0);
-    free(tmp1);
-    free(tmp2);
-    free(tmp3);
+        printf("\n");
+        free(tmp0);
+        free(tmp1);
+        free(tmp2);
+        free(tmp3);
+
+        gen++;
+    }
 
     return 0;
 }
