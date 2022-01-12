@@ -9,11 +9,11 @@
 #include "../header/maze.h"
 
 // Definições iniciais de variáveis globais 
-#define TAMPOP 10 // Tamanho da população 
+#define TAMPOP 50 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
 #define MUT_TAX // Taxa de mutação --> NO MÁXIMO 5%  
 #define DIV 2 // Relação utilizada para fazer o crossover 
-#define MAX_INFO_LEN 350 // Máximo de informações por indivíduos
+#define MAX_INFO_LEN 300 // Máximo de informações por indivíduos
 
 int gen = 0; // Seta a primeira geração 
 
@@ -109,7 +109,6 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV]){
     // Faz uma busca de acordo com índice e o fitness, relacionando-os 
     for(int i = 0; i < TAMPOP/DIV; i++) 
         search(fitness, TAMPOP, vectorAux[i], maxIteration, i);
-    
 }
 
 // Manipula os dados da moda
@@ -129,7 +128,7 @@ void Moda(int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]){
 
     // Passa por todo vetor moda setando o mesmo com valores aleatórios entre 0 e 4
     for(int i = 0; i < MAX_INFO_LEN; i++) 
-        moda[i] = rand() % 4;
+        moda[i] = 0;
 
     for(int i = 0; i < MAX_INFO_LEN; i++){
         for(int j = 0; j < 4; j++){
@@ -319,7 +318,6 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
                     ModaData(crom, modaData);
                 }
             }
-
             temp = temp->next;
             i++;
         }
@@ -344,7 +342,8 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             }
             temp = temp->next;
             i++;
-        } 
+        }
+        break;
     }
 }
 
@@ -377,7 +376,7 @@ int main(){
 
 
     // Repetição que forma as gerações 
-    for(int aux = 0; aux < 50; aux++){
+    for(int aux = 0; aux < 75; aux++){
 
         printf("Generation %d\n",gen);
 
@@ -401,6 +400,7 @@ int main(){
         chromosome *temp1 = list;
 
         setMain(temp1, vectorAux, gen, i, Maze, Ds, 1, fitness, 0, 0, 0);
+        printf("\n");
 
         i = 0;
 
@@ -428,17 +428,19 @@ int main(){
         int moda[MAX_INFO_LEN];
         Moda(modaData, moda);
 
-        /* printf("\nTABELA\n");
+        /*
+        printf("\nTABELA\n");
         for (int i = 0; i < MAX_INFO_LEN; i++) {
             for (int j = 0; j < 4; j++) {
                 printf ("%d ", modaData[i][j]);
             }
             printf("\n");
-        } */
+        } 
 
-        // printf("\nMODA\n");
-        // for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
-        // printf("\n");
+        printf("\nMODA\n");
+        for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
+        printf("\n");
+        */
 
         // printf("\nAntes do CROSSOVER");
         // printList(list);
