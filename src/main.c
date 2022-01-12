@@ -30,7 +30,7 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
         atual = crom[i];
         // Contagem das repetições
         if((ant == 0 && atual == 1) || (ant == 1 && atual == 0) || (ant == 2 && atual == 3) || (ant == 3 && atual == 2))
-            R++;        
+            R++;     
         // O anterior assume o gene[i] do cromossomo 
         ant = crom[i];
 
@@ -40,14 +40,6 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
             break;
         }
     }
-
-    /*
-    for(int i = 0; i < MAX_INFO_LEN; i++)
-        if(crom[i] == 5){
-            B = i - 1;
-            break;
-        }
-    */
 
     fitness[indiv] = (90/(D + 1)) - (0.05)*R + (0.15)*B;
     printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
@@ -151,40 +143,44 @@ void Moda(int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]){
 
 // Após proteger os melhores indivíduos, é necessário incluir
 // os genes dos mesmos ao restante da população
-void Crossover(int crom[], int moda[MAX_INFO_LEN], int gen, int best){
+void Crossover(int crom[], int moda[MAX_INFO_LEN], int step, int best){
 
     // Declaração de variáveis 
     float x;
+    // obs: step = gen, nessa função gen é usado como o passo para aplicação do crossover
     
-    if(gen < 10)
-        gen *= 10;
-    else if(gen > 10 && gen < 25)
-        gen *= 8;
-    else if(gen > 25 && gen < 50)
-        gen *= 7;
-    else if(gen > 50 && gen < 100)
-        gen *= 5;
-    else if(gen > 100 && gen < 150)
-        gen *= 2;
-    
-    //gen *= 20;
+    // para cada step (geração) da função ele aplicará um peso diferente
+    if(step < 10)
+        step *= 10;
+    else if(step > 10 && step < 25)
+        step *= 8;
+    else if(step > 25 && step < 50)
+        step *= 7;
+    else if(step > 50 && step < 100)
+        step *= 5;
+    else if(step > 100 && step < 150)
+        step *= 2;
 
+    // crossover rodando todo o cromossomo
     for (int i = 0; i < MAX_INFO_LEN; i++){
+        // crossover para os não melhores de todos
         if(best == 0){
-            if(i < gen){
+            // até o passo ele provavelmente deve pegar a moda dos melhores
+            if(i < step){
                 x = rand() % 101;
-                if(x < 95){
+                if(x < 95)
                     crom[i] = moda[i];
-                    //crom[i] = crom[i] + ((rand() % 4) + 2) * MUT_TAX;
-                }
                 else
                     crom[i] = rand() % 4;
             }
+            // do passo para frente tudo randomizado
             else{
                 crom[i] = rand() % 4;
             }
         }
+        // crossover para os melhores de todos
         else if(best == 1){
+            // randomiza só a partir que ele bater
             if (crom[i] > 3)
                 crom[i] = rand() % 4;
         }
