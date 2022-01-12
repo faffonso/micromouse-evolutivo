@@ -314,16 +314,16 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             int flagCrossover = 0;
             for (int j = 0; j < TAMPOP/DIV; j++) 
                 if(i == maxIteration[j]) 
-                    flagCrossover = 1; // ta nos melhores de todos
+                    flagCrossover = 1; 
             if(flagCrossover == 0){
-                Crossover(crom, moda, gen); // crossover nos não melhores de todos
+                Crossover(crom, moda, gen); 
                 for (int k = 0; k < MAX_INFO_LEN; k++){
                     temp->info[k] = crom[k];
                 }
             } else {
                 for (int k = 0; k < MAX_INFO_LEN; k++) 
                     crom[k] = temp->info[k];
-                RearrangePop(crom); // RearranjaPop nos melhores melhores de todos
+                RearrangePop(crom); 
                 for (int k = 0; k < MAX_INFO_LEN; k++) 
                     temp->info[k] = crom[k];
             }
