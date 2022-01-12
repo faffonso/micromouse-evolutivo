@@ -11,7 +11,7 @@
 // Definições iniciais de variáveis globais 
 #define TAMPOP 50 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
-#define MUT_TAX // Taxa de mutação --> NO MÁXIMO 5%  
+#define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5%  
 #define DIV 2 // Relação utilizada para fazer o crossover 
 #define MAX_INFO_LEN 300 // Máximo de informações por indivíduos
 
@@ -112,7 +112,7 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV]){
 }
 
 // Manipula os dados da moda
-void ModaData(int crom[MAX_INFO_LEN], int modaData[MAX_INFO_LEN][4]) {
+void ModaData(int crom[MAX_INFO_LEN], int modaData[MAX_INFO_LEN][4]){
 
     for(int i = 0; i < MAX_INFO_LEN; i++){
         // Se o cromossmo tiver algum gene que seja maior que 3, ou seja, que tenha batido ou vá bater
@@ -143,11 +143,10 @@ void Moda(int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]){
 
 // Após proteger os melhores indivíduos, é necessário incluir
 // os genes dos mesmos ao restante da população
-void Crossover(int crom[], int moda[], int gen){
+void Crossover(int crom[], int moda[MAX_INFO_LEN], int gen){
 
     // Declaração de variáveis 
     float x;
-    
     
     if(gen < 10)
         gen *= 20;
@@ -166,8 +165,11 @@ void Crossover(int crom[], int moda[], int gen){
     for(int i = 0; i < gen; i++){
         x = rand() % 101;
         //printf("\ncrom[i] = %d, moda[i] = %d, x = %f", crom[i], moda[i], x);
-        if (x < 95)
+        if(x < 95){
             crom[i] = moda[i];
+
+            crom[i] = crom[i] + ((rand() % 4) + 2) * MUT_TAX;
+        }
         else
             crom[i] = rand() % 4;
     }
@@ -285,16 +287,16 @@ void manageJSFile(int crom[MAX_INFO_LEN], int indiv, int gen, int header){
     chdir("..");
 }
 
-void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned char Maze[N][N], unsigned char Ds[TAMPOP], int input, float fitness[TAMPOP], int maxIteration[TAMPOP/DIV], int modaData[MAX_INFO_LEN][4], int moda[]){
+void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned char Maze[N][N], unsigned char Ds[TAMPOP], int input, float fitness[TAMPOP], int maxIteration[TAMPOP/DIV], int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]){
 
     switch(input){
     case 0:
         while(temp != NULL){
-            for (int j = 0; j < MAX_INFO_LEN; j++)
+            for(int j = 0; j < MAX_INFO_LEN; j++)
                 crom[j] = temp->info[j];
             moveInMaze(Maze, crom, 1, 1, Ds, i);
             manageJSFile(crom, i, gen, 0);
-            for (int j = 0; j < MAX_INFO_LEN; j++)
+            for(int j = 0; j < MAX_INFO_LEN; j++)
                 temp->info[j] = crom[j];
             temp = temp->next;
             i++;
@@ -311,7 +313,7 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
         break;
     case 2:
         while(temp != NULL){
-            for (int j = 0; j < TAMPOP/DIV; j++) {
+            for(int j = 0; j < TAMPOP/DIV; j++){
                 if (i == maxIteration[j]) {
                     for (int k = 0; k < MAX_INFO_LEN; k++) 
                         crom[k] = temp->info[k];
@@ -343,6 +345,21 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             temp = temp->next;
             i++;
         }
+        /*
+        while(temp != NULL){
+            Crossover(crom, moda, gen); 
+            for(int k = 0; k < MAX_INFO_LEN; k++){
+                temp->info[k] = crom[k];
+            }
+            for(int k = 0; k < MAX_INFO_LEN; k++) 
+                crom[k] = temp->info[k];
+            RearrangePop(crom); 
+            for(int k = 0; k < MAX_INFO_LEN; k++) 
+                temp->info[k] = crom[k];
+            temp = temp->next;
+            i++;
+        }
+        */
         break;
     }
 }
@@ -374,7 +391,6 @@ int main(){
     // Criação do labirinto 
     MazeCreation(Maze);
 
-
     // Repetição que forma as gerações 
     for(int aux = 0; aux < 75; aux++){
 
@@ -383,7 +399,9 @@ int main(){
         // printList(list);
 
         int i = 0;
-        int vectorAux[MAX_INFO_LEN];
+        
+        int *vectorAux;
+        vectorAux = (int *)malloc(MAX_INFO_LEN * sizeof(int));
         
         //* MAZE 
 
@@ -425,7 +443,9 @@ int main(){
 
         i = 0;
 
-        int moda[MAX_INFO_LEN];
+        int *moda;
+        moda = (int *)malloc(MAX_INFO_LEN * sizeof(int));
+
         Moda(modaData, moda);
 
         /*
@@ -436,6 +456,7 @@ int main(){
             }
             printf("\n");
         } 
+        
 
         printf("\nMODA\n");
         for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
@@ -458,11 +479,9 @@ int main(){
         // printf("\nDEPOIS DO CROSSOVER");
         // printList(list);
 
-
         printf("\n");
 
-        gen++;
-        
+        gen++;        
     }
 
     return 0;
