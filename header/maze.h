@@ -2,7 +2,7 @@
 #define maze_h
 
 #define N 33 
-#define TAMPOP 50
+#define TAMPOP 10
 #define MAX_INFO_LEN 300
 
 void MazeCreation(unsigned char Maze[N][N]);
