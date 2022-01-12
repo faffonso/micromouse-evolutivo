@@ -111,10 +111,10 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV]){
         search(fitness, TAMPOP, vectorAux[i], maxIteration, i);
 }
 
-void Predation(int maxIteration[TAMPOP/DIV], int crom[MAX_INFO_LEN]){
+void Predation(int crom[MAX_INFO_LEN], int melhor[MAX_INFO_LEN]){
 
     for(int i = 0; i < MAX_INFO_LEN; i++)
-        crom[i] = crom[maxIteration[0]];
+        crom[i] = melhor[i];
 }
 
 
@@ -326,8 +326,8 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
     case 2:
         while(temp != NULL){
             for(int j = 0; j < TAMPOP; j++){
-                if(fitness[j] < fitness[maxIteration[0]]){
-                    Predation(maxIteration, crom);
+                if(fitness[j] < fitness[maxIteration[0]]/2){
+                    Predation(crom, crom[maxIteration[0]]);
                     for(int k = 0; k < MAX_INFO_LEN; k++)
                         temp->info[k] = crom[k];
                 }
@@ -451,16 +451,12 @@ int main(){
         //for (int i = 0; i < TAMPOP/DIV; i++) printf("%d ", maxIteration[i]);
         //printf("\n");    
 
-
-
         //* PREDATION
         chromosome *temp2 = list;
         if(gen == 45){
             setMain(temp2, vectorAux, gen, i, Maze, Ds, 2, fitness, maxIteration, 0, 0);
         }
         i = 0;
-
-
 
         //* MODA
         int modaData[MAX_INFO_LEN][4] = {};
@@ -490,12 +486,10 @@ int main(){
         // printf("\nAntes do CROSSOVER");
         // printList(list);
 
-
         //* Crossover e Mutação
         chromosome *temp4 = list;
         setMain(temp4, vectorAux, gen, i, Maze, Ds, 4, fitness, maxIteration, modaData, moda);
         i = 0;
-
 
         // printf("\nDEPOIS DO CROSSOVER");
         // printList(list);
