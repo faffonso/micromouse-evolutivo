@@ -1,8 +1,8 @@
 #ifndef linkedList_h
 #define linkedList_h
 
-#define TAMPOP 1000
-#define MAX_INFO_LEN 300
+#define TAMPOP 200
+#define MAX_INFO_LEN 400
 
 // Stuct individual do tipo chromosome, contendo informações do indivíduo 
 typedef struct individual{

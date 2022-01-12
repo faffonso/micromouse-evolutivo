@@ -9,11 +9,11 @@
 #include "../header/maze.h"
 
 // Definições iniciais de variáveis globais 
-#define TAMPOP 1000 // Tamanho da população 
+#define TAMPOP 200 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
-#define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5%  
+#define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5% 
 #define DIV 2 // Relação utilizada para fazer o crossover 
-#define MAX_INFO_LEN 300 // Máximo de informações por indivíduos
+#define MAX_INFO_LEN 400 // Máximo de informações por indivíduos
 
 int gen = 0; // Seta a primeira geração 
 
@@ -152,7 +152,7 @@ void Moda(int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]){
 
 // Após proteger os melhores indivíduos, é necessário incluir
 // os genes dos mesmos ao restante da população
-void Crossover(int crom[], int moda[MAX_INFO_LEN], int gen){
+void Crossover(int crom[], int moda[MAX_INFO_LEN], int gen, int best){
 
     // Declaração de variáveis 
     float x;
@@ -170,50 +170,49 @@ void Crossover(int crom[], int moda[MAX_INFO_LEN], int gen){
     
     //gen *= 20;
 
-    // Passa por todas as gerações 
-    for(int i = 0; i < gen; i++){
-        x = rand() % 101;
-        //printf("\ncrom[i] = %d, moda[i] = %d, x = %f", crom[i], moda[i], x);
-        if(x < 95){
-            crom[i] = moda[i];
-
-            crom[i] = crom[i] + ((rand() % 4) + 2) * MUT_TAX;
+    for (int i = 0; i < MAX_INFO_LEN; i++){
+        if(best == 0){
+            if(i < gen){
+                x = rand() % 101;
+                if(x < 95){
+                    crom[i] = moda[i];
+                    //crom[i] = crom[i] + ((rand() % 4) + 2) * MUT_TAX;
+                }
+                else
+                    crom[i] = rand() % 4;
+            }
+            else{
+                crom[i] = rand() % 4;
+            }
         }
-        else
-            crom[i] = rand() % 4;
+        else if(best == 1){
+            if (crom[i] > 3)
+                crom[i] = rand() % 4;
+        }
     }
-    
-    for (int i = gen; i < MAX_INFO_LEN; i++) 
-        crom[i] = rand() % 4;
-}
-
-// Rearranja a população
-void RearrangePop(int crom[]){
-    for (int i = 0; i < MAX_INFO_LEN; i++)
-        if (crom[i] > 3)
-            crom[i] = rand() % 4;
-    
 }
 
 // Função que organiza os arquivos
 void manageFitnessFile(float fitness[TAMPOP], int gen, int header){
 
-    // Relative file path
+    // relative file path
     char path[1000] = { };
-    strcat(path, ""); // In case we want to use a different relative path
+    strcat(path, ""); // in case we want to use a different relative path
     strcat(path, "data_fitness.txt");
 
-    // Open the file
+    // open the file
     FILE *file;
     
-    chdir("src"); // Change working directory to file manipulation
-    file = fopen(path, "r" );
+    chdir("src"); // change working directory to file manipulation
+    file = fopen(path, "r" ); // file open
+    // check any erros opening the file
     if (!file){
         printf("\nFailed to open text file\n");
         exit(1);
     }
     fclose(file);
     
+    // header
     if(header == 1){
         file = fopen(path, "w");
         fprintf(file, "%s", "Arquivo de dados do FITNESS do Micromouse Evolutivo\n");
@@ -224,6 +223,7 @@ void manageFitnessFile(float fitness[TAMPOP], int gen, int header){
         fprintf(file, "%s", "\n");
         fclose(file);
     }
+    // append fitness of all generations
     else{
         file = fopen(path, "a");    
 
@@ -238,7 +238,7 @@ void manageFitnessFile(float fitness[TAMPOP], int gen, int header){
         fprintf(file, "%s", "\n");
         fclose(file);
     }
-    chdir("..");
+    chdir(".."); // change back to the original directory
 }
 
 void manageJSFile(int crom[MAX_INFO_LEN], int indiv, int gen, int header){
@@ -253,6 +253,7 @@ void manageJSFile(int crom[MAX_INFO_LEN], int indiv, int gen, int header){
     
     chdir("src"); // change working directory to file manipulation
     file = fopen(path, "r" );
+    // check any erros opening the file
     if (!file){
         printf("\nFailed to open text file\n");
         exit(1);
@@ -293,7 +294,7 @@ void manageJSFile(int crom[MAX_INFO_LEN], int indiv, int gen, int header){
         fprintf(file, "%s", "\n\n");
         fclose(file);
     }
-    chdir("..");
+    chdir(".."); // change back to the original directory
 }
 
 void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned char Maze[N][N], unsigned char Ds[TAMPOP], int input, float fitness[TAMPOP], int maxIteration[TAMPOP/DIV], int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]){
@@ -340,14 +341,14 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
                 if(i == maxIteration[j]) 
                     flagCrossover = 1; 
             if(flagCrossover == 0){
-                Crossover(crom, moda, gen); 
+                Crossover(crom, moda, gen, 0); 
                 for (int k = 0; k < MAX_INFO_LEN; k++){
                     temp->info[k] = crom[k];
                 }
             } else {
                 for (int k = 0; k < MAX_INFO_LEN; k++) 
                     crom[k] = temp->info[k];
-                RearrangePop(crom); 
+                Crossover(crom, moda, gen, 1);
                 for (int k = 0; k < MAX_INFO_LEN; k++) 
                     temp->info[k] = crom[k];
             }
@@ -403,7 +404,7 @@ int main(){
 
     // Repetição que forma as gerações 
 
-    for(int aux = 0; aux < 200; aux++){
+    for(int aux = 0; aux < 20; aux++){
 
         printf("Generation %d\n",gen);
 
@@ -435,11 +436,7 @@ int main(){
             Predation(fitness, maxIteration, vectorAux);
 
         //* MODA
-        int modaData[MAX_INFO_LEN][4];
-        for (int i = 0; i < MAX_INFO_LEN; i++)
-            for (int j = 0; j < 4; j++)
-                modaData[i][j] = 0;
-
+        int modaData[MAX_INFO_LEN][4] = {};
         chromosome *temp2 = list;
         setMain(temp2, vectorAux, gen, i, Maze, Ds, 2, fitness, maxIteration, modaData, 0);
         i = 0;
