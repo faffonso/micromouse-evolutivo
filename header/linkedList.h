@@ -1,7 +1,7 @@
 #ifndef linkedList_h
 #define linkedList_h
 
-#define TAMPOP 1000
+#define TAMPOP 100
 #define MAX_INFO_LEN 300
 
 // Stuct individual do tipo chromosome, contendo informações do indivíduo 

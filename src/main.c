@@ -9,7 +9,7 @@
 #include "../header/maze.h"
 
 // Definições iniciais de variáveis globais 
-#define TAMPOP 1000 // Tamanho da população 
+#define TAMPOP 100 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
 #define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5% 
 #define DIV 2 // Relação utilizada para fazer o crossover 
@@ -422,7 +422,7 @@ int main(){
 
     // Repetição que forma as gerações 
 
-    for(int aux = 0; aux < 150; aux++){
+    for(int aux = 0; aux < 50; aux++){
 
         printf("Generation %d\n", gen);
 
