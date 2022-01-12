@@ -123,7 +123,8 @@ void Moda (int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]) {
         for (int j = 0; j < 4; j++) {
             //! Randomizar se tiver valorese iguais
             // sugestão: esclher a soma com mais fitness
-            if(modaData[i][j] > modaData[i][moda[i]]) moda[i] = j;
+            if(modaData[i][j] > modaData[i][moda[i]]) 
+                moda[i] = j;
         }
     }
 }
@@ -136,7 +137,7 @@ void Crossover(int crom[], int moda[], int gen){
     for (int i = 0; i < gen; i++){
         x = rand() % 101;
         //printf("\ncrom[i] = %d, moda[i] = %d, x = %f", crom[i], moda[i], x);
-        if (x < 85)
+        if (x < 95)
             crom[i] = moda[i];
         else
             crom[i] = rand() % 4;
@@ -246,7 +247,6 @@ void manageJSFile(int crom[MAX_INFO_LEN], int indiv, int gen, int header){
     }
     else if(header == 2){
         file = fopen(path, "a"); 
-        printf("\nNO JS FILE");
         fprintf(file, "%s", "\nGeneration: ");
         fprintf(file, "%d", gen);
         fprintf(file, "%s", "\n\n");
@@ -299,7 +299,7 @@ int main(){
             tmp0 = tmp0->next;
             i++;
         } i = 0;
-        printf("\nPRE MANAGEJSFILE");
+
         manageJSFile(vectorAux, 0, gen, 2);
 
         //* FITNESS FUNCTION
