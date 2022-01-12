@@ -3,7 +3,7 @@
 
 #define N 33 
 #define TAMPOP 10
-#define MAX_INFO_LEN 300
+#define MAX_INFO_LEN 350
 
 void MazeCreation(unsigned char Maze[N][N]);
 void MazePosition(unsigned char Maze[N][N], int *x, int *y, int dx, int dy, unsigned char *flag, unsigned char Ds[TAMPOP], int indiv);
