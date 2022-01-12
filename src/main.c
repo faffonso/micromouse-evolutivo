@@ -332,11 +332,12 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             //for(int k = 0; k < MAX_INFO_LEN; k++)
             //    if(k == maxIteration[0])
             //        bestcrom[k] = 
-            Predation(maxIteration, fitness, crom, crom[maxIteration[0]]);
-            for(int k = 0; k < MAX_INFO_LEN; k++)
-                temp->info[k] = crom[k];
+            //Predation(maxIteration, fitness, crom, crom[maxIteration[0]]);
+            //for(int k = 0; k < MAX_INFO_LEN; k++)
+                //temp->info[k] = crom[k];
             temp = temp->next;
             i++;
+            printf("\npredacao desativada :(");
         }
         break;
     // moda
