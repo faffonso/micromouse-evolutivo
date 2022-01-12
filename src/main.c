@@ -394,8 +394,6 @@ int main(){
 
         i = 0;
 
-        printf("\nPRE MANAGEJSFILE");
-
         manageJSFile(vectorAux, 0, gen, 2);
 
         //* FITNESS FUNCTION
