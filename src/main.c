@@ -9,7 +9,7 @@
 #include "../header/maze.h"
 
 // Definições iniciais de variáveis globais 
-#define TAMPOP 50 // Tamanho da população 
+#define TAMPOP 1000 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
 #define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5% 
 #define DIV 2 // Relação utilizada para fazer o crossover 
@@ -299,18 +299,20 @@ void manageJSFile(int crom[MAX_INFO_LEN], int indiv, int gen, int header){
 void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned char Maze[N][N], unsigned char Ds[TAMPOP], int input, float fitness[TAMPOP], int maxIteration[TAMPOP/DIV], int modaData[MAX_INFO_LEN][4], int moda[MAX_INFO_LEN]){
 
     switch(input){
+    // move in maze
     case 0:
         while(temp != NULL){
             for(int j = 0; j < MAX_INFO_LEN; j++)
                 crom[j] = temp->info[j];
             moveInMaze(Maze, crom, 1, 1, Ds, i);
-            manageJSFile(crom, i, gen, 0);
+            manageJSFile(crom, i, gen, 0); // aproveita o loop para passar os cromossomos
             for(int j = 0; j < MAX_INFO_LEN; j++)
                 temp->info[j] = crom[j];
             temp = temp->next;
             i++;
         }
         break;
+    // fitness function
     case 1:
         while(temp != NULL){
             for(int j = 0; j < TAMPOP; j++)
@@ -320,6 +322,7 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             i++;
         }
         break;
+    // predation
     case 2:
         while(temp != NULL){
             for(int j = 0; j < TAMPOP; j++){
@@ -333,6 +336,7 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             i++;
         }
         break;
+    // moda
     case 3:
         while(temp != NULL){
             for(int j = 0; j < TAMPOP/DIV; j++){
@@ -346,6 +350,7 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             i++;
         }
         break;
+    // crossover
     case 4:
         while(temp != NULL){
             int flagCrossover = 0;
@@ -396,7 +401,8 @@ int main(){
     chromosome *list;
     unsigned char Maze[N][N];
     int vector[MAX_INFO_LEN];
-    float fitness[TAMPOP];
+    //float fitness[TAMPOP];
+    float* fitness = (float *)calloc(TAMPOP, sizeof(float));
     unsigned char Ds[TAMPOP];
     
     manageFitnessFile(fitness, 0, 1);
@@ -416,13 +422,13 @@ int main(){
 
     // Repetição que forma as gerações 
 
-    for(int aux = 0; aux < 60; aux++){
+    for(int aux = 0; aux < 150; aux++){
 
         printf("Generation %d\n", gen);
 
         int i = 0;
         int vectorAux[MAX_INFO_LEN];
-
+    
         //* MAZE
         chromosome *temp0 = list;
         setMain(temp0, vectorAux, gen, i, Maze, Ds, 0, 0, 0, 0, 0);
@@ -436,6 +442,8 @@ int main(){
         printf("\n");
         i = 0;
 
+        manageFitnessFile(fitness, gen, 0);
+
         //* SELECTION
         int maxIteration[TAMPOP/DIV];
         Selection(fitness, maxIteration);
@@ -443,12 +451,16 @@ int main(){
         //for (int i = 0; i < TAMPOP/DIV; i++) printf("%d ", maxIteration[i]);
         //printf("\n");    
 
+
+
         //* PREDATION
         chromosome *temp2 = list;
         if(gen == 45){
             setMain(temp2, vectorAux, gen, i, Maze, Ds, 2, fitness, maxIteration, 0, 0);
         }
         i = 0;
+
+
 
         //* MODA
         int modaData[MAX_INFO_LEN][4] = {};
@@ -484,7 +496,6 @@ int main(){
         setMain(temp4, vectorAux, gen, i, Maze, Ds, 4, fitness, maxIteration, modaData, moda);
         i = 0;
 
-        manageFitnessFile(fitness, gen, 0);
 
         // printf("\nDEPOIS DO CROSSOVER");
         // printList(list);
