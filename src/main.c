@@ -370,6 +370,7 @@ int main(){
     srand(time(NULL));
 
     // Declaração de varíaveis 
+
     chromosome *list;
     unsigned char Maze[N][N];
     int vector[MAX_INFO_LEN];
@@ -392,22 +393,22 @@ int main(){
     MazeCreation(Maze);
 
     // Repetição que forma as gerações 
+
     for(int aux = 0; aux < 200; aux++){
 
         printf("Generation %d\n",gen);
 
         int i = 0;
-        
-        int *vectorAux;
-        vectorAux = (int *)malloc(MAX_INFO_LEN * sizeof(int));
-        
-        //* MAZE 
+        int vectorAux[MAX_INFO_LEN];
+
+        //* MAZE
         chromosome *temp0 = list;
         setMain(temp0, vectorAux, gen, i, Maze, Ds, 0, 0, 0, 0, 0);
         manageJSFile(vectorAux, 0, gen, 2);
         i = 0;
 
         //* FITNESS FUNCTION
+        printf("\nFITNESS");
         chromosome *temp1 = list;
         setMain(temp1, vectorAux, gen, i, Maze, Ds, 1, fitness, 0, 0, 0);
         printf("\n");
@@ -430,7 +431,7 @@ int main(){
         i = 0;
 
         int *moda;
-        moda = (int *)malloc(MAX_INFO_LEN * sizeof(int));
+        moda = (int *)calloc(MAX_INFO_LEN, sizeof(int));
 
         Moda(modaData, moda);
 
