@@ -9,11 +9,11 @@
 #include "../header/maze.h"
 
 // Definições iniciais de variáveis globais 
-#define TAMPOP 100 // Tamanho da população 
+#define TAMPOP 50 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
 #define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5% 
 #define DIV 2 // Relação utilizada para fazer o crossover 
-#define MAX_INFO_LEN 400 // Máximo de informações por indivíduos
+#define MAX_INFO_LEN 300 // Máximo de informações por indivíduos
 
 int gen = 0; // Seta a primeira geração 
 
@@ -111,15 +111,12 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV]){
         search(fitness, TAMPOP, vectorAux[i], maxIteration, i);
 }
 
-void Predation(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV], int crom[MAX_INFO_LEN]){
-    
-    for(int i = 0; i < TAMPOP; i++){
-        if(fitness[i] < fitness[maxIteration[0]]/2){
-            for(int j = 0; j < MAX_INFO_LEN; j++)
-                crom[j] = crom[maxIteration[0]];
-        }
-    }
+void Predation(int maxIteration[TAMPOP/DIV], int crom[MAX_INFO_LEN]){
+
+    for(int i = 0; i < MAX_INFO_LEN; i++)
+        crom[i] = crom[maxIteration[0]];
 }
+
 
 
 // Manipula os dados da moda
@@ -325,8 +322,21 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
         break;
     case 2:
         while(temp != NULL){
+            for(int j = 0; j < TAMPOP; j++){
+                if(fitness[j] < fitness[maxIteration[0]]){
+                    Predation(maxIteration, crom);
+                    for(int k = 0; k < MAX_INFO_LEN; k++)
+                        temp->info[k] = crom[k];
+                }
+            }
+            temp = temp->next;
+            i++;
+        }
+        break;
+    case 3:
+        while(temp != NULL){
             for(int j = 0; j < TAMPOP/DIV; j++){
-                if (i == maxIteration[j]) {
+                if(i == maxIteration[j]){
                     for (int k = 0; k < MAX_INFO_LEN; k++) 
                         crom[k] = temp->info[k];
                     ModaData(crom, modaData);
@@ -336,7 +346,7 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
             i++;
         }
         break;
-    case 3:
+    case 4:
         while(temp != NULL){
             int flagCrossover = 0;
             for (int j = 0; j < TAMPOP/DIV; j++) 
@@ -344,14 +354,14 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
                     flagCrossover = 1; 
             if(flagCrossover == 0){
                 Crossover(crom, moda, gen, 0); 
-                for (int k = 0; k < MAX_INFO_LEN; k++){
+                for(int k = 0; k < MAX_INFO_LEN; k++){
                     temp->info[k] = crom[k];
                 }
             } else {
-                for (int k = 0; k < MAX_INFO_LEN; k++) 
+                for(int k = 0; k < MAX_INFO_LEN; k++) 
                     crom[k] = temp->info[k];
                 Crossover(crom, moda, gen, 1);
-                for (int k = 0; k < MAX_INFO_LEN; k++) 
+                for(int k = 0; k < MAX_INFO_LEN; k++) 
                     temp->info[k] = crom[k];
             }
             temp = temp->next;
@@ -406,9 +416,9 @@ int main(){
 
     // Repetição que forma as gerações 
 
-    for(int aux = 0; aux < 200; aux++){
+    for(int aux = 0; aux < 60; aux++){
 
-        printf("Generation %d\n",gen);
+        printf("Generation %d\n", gen);
 
         int i = 0;
         int vectorAux[MAX_INFO_LEN];
@@ -433,14 +443,17 @@ int main(){
         //for (int i = 0; i < TAMPOP/DIV; i++) printf("%d ", maxIteration[i]);
         //printf("\n");    
 
-
-        if(gen == 45)
-            Predation(fitness, maxIteration, vectorAux);
+        //* PREDATION
+        chromosome *temp2 = list;
+        if(gen == 45){
+            setMain(temp2, vectorAux, gen, i, Maze, Ds, 2, fitness, maxIteration, 0, 0);
+        }
+        i = 0;
 
         //* MODA
         int modaData[MAX_INFO_LEN][4] = {};
-        chromosome *temp2 = list;
-        setMain(temp2, vectorAux, gen, i, Maze, Ds, 2, fitness, maxIteration, modaData, 0);
+        chromosome *temp3 = list;
+        setMain(temp3, vectorAux, gen, i, Maze, Ds, 3, fitness, maxIteration, modaData, 0);
         i = 0;
 
         int *moda;
@@ -467,9 +480,10 @@ int main(){
 
 
         //* Crossover e Mutação
-        chromosome *temp3 = list;
-        setMain(temp3, vectorAux, gen, i, Maze, Ds, 3, fitness, maxIteration, modaData, moda);
+        chromosome *temp4 = list;
+        setMain(temp4, vectorAux, gen, i, Maze, Ds, 4, fitness, maxIteration, modaData, moda);
         i = 0;
+
         manageFitnessFile(fitness, gen, 0);
 
         // printf("\nDEPOIS DO CROSSOVER");
