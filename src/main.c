@@ -9,7 +9,7 @@
 #include "../header/maze.h"
 
 // Definições iniciais de variáveis globais 
-#define TAMPOP 1000 // Tamanho da população 
+#define TAMPOP 100 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
 #define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5% 
 #define DIV 2 // Relação utilizada para fazer o crossover 
@@ -326,7 +326,7 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
     case 2:
         while(temp != NULL){
             for(int j = 0; j < TAMPOP; j++){
-                if(fitness[j] < fitness[maxIteration[0]]/2){
+                if((float)fitness[j] < (float)fitness[maxIteration[0]]/2.0){
                     Predation(crom, crom[maxIteration[0]]);
                     for(int k = 0; k < MAX_INFO_LEN; k++)
                         temp->info[k] = crom[k];
@@ -422,7 +422,7 @@ int main(){
 
     // Repetição que forma as gerações 
 
-    for(int aux = 0; aux < 150; aux++){
+    for(int aux = 0; aux < 50; aux++){
 
         printf("Generation %d\n", gen);
 
