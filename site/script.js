@@ -242,11 +242,8 @@ function readSingleFile(e) {
     .addEventListener('change', readSingleFile, false);
 
     */
-<<<<<<< HEAD
 
 // parece bom esse aq
-=======
->>>>>>> 7fd718c55db346fc18d5982d78020e8e1cab3d3d
 document.getElementById('file').onchange = function(){
 
     var file = this.files[0];
