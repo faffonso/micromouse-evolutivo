@@ -17,25 +17,31 @@
     <div class="container-xl d-flex">
         <div id="main-left">
             <div id="overview" class="rounded shadow-lg border border-3">
-
+                <canvas width="640" height="640" style="border: solid"></canvas>
             </div>
-            <div id="buttons"class="d-flex justify-content-evenly align-items-center rounded-bottom shadow-lg border border-3">
-                <i>
-                    <img src="../public/images/play.svg" alt="">
-                </i>
-                <i>
-                    <img src="../public/images/pause.svg" alt="">
-                </i>
-                <i>
-                    <img src="../public/images/refresh-cw.svg" alt="">
-                </i>
+            <div id="buttons"class="d-flex justify-content-evenly align-items-center rounded-bottom shadow-lg border border-3 border-dark" style="margin-top: -6px">
+                <button style="border: none">
+                    <i onClick="play()">
+                        <img src="../public/images/play.svg" alt="">
+                    </i>
+                </button>
+                <button style="border: none">
+                    <i onClick="pause()">
+                        <img src="../public/images/pause.svg" alt="">
+                    </i>
+                </button>
+                <button style="border: none">
+                    <i onClick="restart()">
+                        <img src="../public/images/refresh-cw.svg" alt="">
+                    </i>
+                </button>
             </div>
         </div>
         <div id="main-right">
             <div id="parameters"class="rounded shadow-lg border border-3">
                 <div class="p-3 mt-4 btn-group  d-flex justify-content-center" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary">Maze 1</button>
-                    <button type="button" class="btn btn-primary">Maze 2</button>
+                    <button type="button" class="btn btn-primary" onClick="maze(0)">Maze 1</button>
+                    <button type="button" class="btn btn-primary" onClick="maze(1)">Maze 2</button>
                 </div>
                 <label for="customRange1" class="p-3 btnform-label">Tamanho da População</label>
                 <input type="range" class="p-3 form-range" min="100" max="500" step="10" id="customRange1">
@@ -52,5 +58,8 @@
         </div>
 
     </div>
+    <input type="file" name="file" id="file">
+    <script  src="script.js"></script>
 </body>
 </html>
+
