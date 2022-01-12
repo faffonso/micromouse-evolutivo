@@ -111,6 +111,15 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV]){
         search(fitness, TAMPOP, vectorAux[i], maxIteration, i);
 }
 
+void Predation(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV], int crom[MAX_INFO_LEN]){
+    
+    for(int i = 0; i < TAMPOP; i++){
+        if(fitness[i] < fitness[maxIteration[0]]/2)
+            crom[i] = crom[maxIteration[0]];
+    }
+}
+
+
 // Manipula os dados da moda
 void ModaData(int crom[MAX_INFO_LEN], int modaData[MAX_INFO_LEN][4]){
 
@@ -370,6 +379,7 @@ int main(){
     srand(time(NULL));
 
     // Declaração de varíaveis 
+
     chromosome *list;
     unsigned char Maze[N][N];
     int vector[MAX_INFO_LEN];
@@ -392,22 +402,22 @@ int main(){
     MazeCreation(Maze);
 
     // Repetição que forma as gerações 
+
     for(int aux = 0; aux < 200; aux++){
 
         printf("Generation %d\n",gen);
 
         int i = 0;
-        
-        int *vectorAux;
-        vectorAux = (int *)malloc(MAX_INFO_LEN * sizeof(int));
-        
-        //* MAZE 
+        int vectorAux[MAX_INFO_LEN];
+
+        //* MAZE
         chromosome *temp0 = list;
         setMain(temp0, vectorAux, gen, i, Maze, Ds, 0, 0, 0, 0, 0);
         manageJSFile(vectorAux, 0, gen, 2);
         i = 0;
 
         //* FITNESS FUNCTION
+        printf("\nFITNESS");
         chromosome *temp1 = list;
         setMain(temp1, vectorAux, gen, i, Maze, Ds, 1, fitness, 0, 0, 0);
         printf("\n");
@@ -420,17 +430,22 @@ int main(){
         //for (int i = 0; i < TAMPOP/DIV; i++) printf("%d ", maxIteration[i]);
         //printf("\n");    
 
+
+        if(gen == 45)
+            Predation(fitness, maxIteration, vectorAux);
+
         //* MODA
         int modaData[MAX_INFO_LEN][4];
         for (int i = 0; i < MAX_INFO_LEN; i++)
             for (int j = 0; j < 4; j++)
                 modaData[i][j] = 0;
+
         chromosome *temp2 = list;
         setMain(temp2, vectorAux, gen, i, Maze, Ds, 2, fitness, maxIteration, modaData, 0);
         i = 0;
 
         int *moda;
-        moda = (int *)malloc(MAX_INFO_LEN * sizeof(int));
+        moda = (int *)calloc(MAX_INFO_LEN, sizeof(int));
 
         Moda(modaData, moda);
 
@@ -443,7 +458,6 @@ int main(){
             printf("\n");
         } 
         
-
         printf("\nMODA\n");
         for (int i = 0; i < MAX_INFO_LEN; i++) printf("%d ", moda[i]);
         printf("\n");
