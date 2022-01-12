@@ -9,11 +9,11 @@
 #include "../header/maze.h"
 
 // Definições iniciais de variáveis globais 
-#define TAMPOP 100 // Tamanho da população 
+#define TAMPOP 10 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
 #define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5% 
 #define DIV 2 // Relação utilizada para fazer o crossover 
-#define MAX_INFO_LEN 300 // Máximo de informações por indivíduos
+#define MAX_INFO_LEN 100 // Máximo de informações por indivíduos
 
 int gen = 0; // Seta a primeira geração 
 
@@ -111,17 +111,23 @@ void Selection(float fitness[TAMPOP], int maxIteration[TAMPOP/DIV]){
         search(fitness, TAMPOP, vectorAux[i], maxIteration, i);
 }
 
-void Predation(int maxIteration[TAMPOP/DIV], int fitness[TAMPOP], int crom[MAX_INFO_LEN], int melhor[MAX_INFO_LEN]){
+void Predation(int maxIteration[TAMPOP/DIV], float fitness[TAMPOP], int crom[MAX_INFO_LEN]){
 
-    for(int j = 0; j < TAMPOP; j++)
-        if(fitness[maxIteration[0]]/2 > fitness[j])
-            for(int i = 0; i < MAX_INFO_LEN; i++)
-                crom[i] = melhor[i];
+    int bestCrom[MAX_INFO_LEN];
 
+    for(int i = 0; i < MAX_INFO_LEN; i++){
+        bestCrom[i] = crom[i];
+        //printf("cromossomo[%d]: %d\n", maxIteration[0], bestCrom[i]);
+    }
 
+    for(int i = 0; i < TAMPOP; i++){
+        if(fitness[i] < (fitness[maxIteration[0]])/2){
+            for(int j = 0; j < MAX_INFO_LEN; j++){
+                //printf("cromossomo[%d]: %d\n", i, crom[j]);
+            }
+        }
+    }
 }
-
-
 
 // Manipula os dados da moda
 void ModaData(int crom[MAX_INFO_LEN], int modaData[MAX_INFO_LEN][4]){
@@ -329,9 +335,15 @@ void setMain(chromosome *temp, int crom[MAX_INFO_LEN], int gen, int i, unsigned 
     // predation
     case 2:
         while(temp != NULL){
-            Predation(maxIteration, fitness, crom, crom[maxIteration[0]]);
-            for(int k = 0; k < MAX_INFO_LEN; k++)
-                temp->info[k] = crom[k];   
+            for(int j = 0; j < TAMPOP/DIV; j++){
+                if(i == maxIteration[j]){
+                    for(int k = 0; k < MAX_INFO_LEN; k++)
+                        crom[k] = temp->info[k];
+                    Predation(maxIteration, fitness, crom);  
+                    for(int k = 0; k < MAX_INFO_LEN; k++) 
+                        temp->info[k] = crom[k];
+                }
+            }
             temp = temp->next;
             i++;
         }
@@ -421,8 +433,7 @@ int main(){
     MazeCreation(Maze);
 
     // Repetição que forma as gerações 
-
-    for(int aux = 0; aux < 50; aux++){
+    for(int aux = 0; aux <= 46; aux++){
 
         printf("Generation %d\n", gen);
 
@@ -454,6 +465,8 @@ int main(){
         //* PREDATION
         chromosome *temp2 = list;
         if(gen == 45){
+            printList(list);
+        
             setMain(temp2, vectorAux, gen, i, Maze, Ds, 2, fitness, maxIteration, 0, 0);
         }
         i = 0;
