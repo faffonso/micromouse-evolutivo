@@ -33,7 +33,7 @@ Os parametros utilizados para montar a parte evolutiva do código estão explica
 * **GEN_MAX:** Máximo de gerações a serem rodadas
 * **MUX_TAX:** Taxa de mutação (quanto de mutabilidade é aplicado no CROSSOVER)
 
-> obs: o N (tamanho do labirinto) é fixo
+> obs: o N (tamanho do labirinto) é fixo e estipulado pelo Micromouse
 
 ### Resultados
 
