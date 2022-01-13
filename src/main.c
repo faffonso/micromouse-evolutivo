@@ -35,13 +35,17 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
         ant = crom[i];
 
         // Caso haja a indicação que o indivíduo bateu, o mesmo tira um bloco que ele andou 
-        if(crom[i] == 5){
+        if((crom[i] == 5) || (crom[i] == 7)){
             B = i - 1;
             break;
         }
+        if(crom[i] == 6){
+            D = 0;
+            R = 0;
+        }
     }
 
-    fitness[indiv] = (90/(D + 1)) - (0.04)*R + (0.1)*B;
+    fitness[indiv] = (90/(D + 1)) - (0.08)*R + (0.1)*B;
     printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
 }
 

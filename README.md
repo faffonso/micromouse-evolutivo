@@ -15,7 +15,7 @@
 
 Projeto final desenvolvido para disciplina de Sistemas Evolutivos e Aplicados à Robótica (SSC0713) oferecida pelo ICMC-USP. Todos os programas  e algoritmos desenvolvidos na disciplina e nesse projeto possuem apenas fins educacionais. O projeto é um compilado de algoritmos com o intuito de montar um algoritmo evolutivo para resolver o labirinto de competições MicroMouse, como no link: https://en.wikipedia.org/wiki/Micromouse. 
 
-O projeto é divido em diversas pastas neste repositório, onde a pasta *src* fornece a maior parte dos algoritmos, tanto evolutivo quanto para análise de dados. Para sua utilização, há na pasta *header* dois arquvios .h importantes para o funcionamento da pasta src. Além disso, na pastas *obj* encontra-se alguns arquvivos de extensão .o relativos ao Cmake feito, e na pasta *public* imagens dos labirintos utilizados de inspiração, bem como sua implementação em um .txt. Por fim, a pasta *docs* guarda todas as informações necessárias para o funcionamento do site com a interface, a qual é auxiliada pela pasta *assets* com as extensões .svg. No mais, alguns arquvios de extensão .d estão na pasta principal do repositório e sao originário do Cmake.
+O projeto é divido em diversas pastas neste repositório, onde a pasta **src** fornece a maior parte dos algoritmos, tanto evolutivo quanto para análise de dados. Para sua utilização, há na pasta **header** dois arquvios .h importantes para o funcionamento da pasta src. Além disso, na pastas **obj** encontra-se alguns arquvivos de extensão .o relativos ao Cmake feito, e na pasta **public** imagens dos labirintos utilizados de inspiração, bem como sua implementação em um .txt. Por fim, a pasta **docs** guarda todas as informações necessárias para o funcionamento do site com a interface, a qual é auxiliada pela pasta **assets** com as extensões .svg. No mais, alguns arquvios de extensão .d estão na pasta principal do repositório e sao originário do Cmake.
 
 ### Funcionalidades e Resultados
 
@@ -63,7 +63,7 @@ make all && ./MicroMouse_evolutivo
  
 Após o comando acima ser executado, pode-se avaliar as informações obtidas a partir do arquivo *"data_analysis.ipynb"* no path */src/data analysis/*. Recomenda-se, ou utilizar o vs code com a extensão "Jupyter", ou clicando com botão direito no arquivo e selecionando a opção "abrir com navegador". Em ambos os casos o comando de execução está no botão no canto superior da página com nome **Run all**. Vale lembrar que dependendo do número de dados o programa pode levar alguns instantes para ser executado.
  
-Outra funcionalidade disponível, após o comando make é observar o labirinto por meio do site, para isso, a forma mais fácil é utilizar o arquivo *"index.html"* na pasta */docs/* e clicar no botão direito selecionando a opção "abrir com navegador". A Partir disso, basta utilizar os recursos disponíveis na interface e iniciar a animação.
+Outra funcionalidade disponível, após o comando make é observar o labirinto por meio do **site**, para isso, a forma mais fácil é utilizar o arquivo *"index.html"* na pasta */docs/* e clicar no botão direito selecionando a opção "abrir com navegador". A Partir disso, basta utilizar os recursos disponíveis na interface e iniciar a animação.
 
 
 ## Licença
