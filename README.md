@@ -58,7 +58,7 @@ make all && ./MicroMouse_evolutivo
 
 > obs: para problemas em rodar o código, revisar o arquivo "Makefile" e suas chamdas
 
-## Licensa
+## Licença
 
 * MicroMouse_evolutivo é GNU General Public License v3.0.
     * O MicroMouse_evolutivo está em "Creative Commons licensed".
