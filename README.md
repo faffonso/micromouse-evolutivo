@@ -2,9 +2,12 @@
 
 ## Descrição do Projeto
 
-<h4 align="center"> 
-    :construction:  Projeto em construção  :construction:
-</h4>
+<p align="center">
+<img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/>
+</p>
+
+![Badge License](https://img.shields.io/github/license/faffonso/MicroMouse-Evolutivo?style=plastic)
+
 
 ### Overview
 
@@ -15,6 +18,8 @@ Projeto final desenvolvido para disciplina de Sistemas Evolutivos e Aplicados à
 ### Resultados
 
 ### Parâmetros evolutivos
+
+* Os parametros utilizados para montar a parte evolutiva do código estão explicados durante sua implementação, porém cabe, nesse momento, uma breve descrição dos principais.
 
 ## How to run
 
