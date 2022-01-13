@@ -463,7 +463,7 @@ int main(){
         chromosome *temp2 = list;
         if(gen == 50 || gen == 100 || gen == 150){        
             printf("\nPREDAÇÃO");
-            //setMain(temp2, vectorAux, gen, i, Maze, Ds, 3, fitness, maxIteration, 0, 0);
+            setMain(temp2, vectorAux, gen, i, Maze, Ds, 3, fitness, maxIteration, 0, 0);
         }
         i = 0;
 
