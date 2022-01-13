@@ -11,7 +11,6 @@
 
 ## Descrição do Projeto
 
-
 ### Overview
 
 Projeto final desenvolvido para disciplina de Sistemas Evolutivos e Aplicados à Robótica (SSC0713) oferecida pelo ICMC-USP. Todos os programas  e algoritmos desenvolvidos na disciplina e nesse projeto possuem apenas fins educacionais. O projeto é um compilado de algoritmos com o intuito de montar um algoritmo evolutivo para resolver o labirinto de competições MicroMouse, como no link: https://en.wikipedia.org/wiki/Micromouse. 
@@ -62,7 +61,7 @@ make all && ./MicroMouse_evolutivo
 ## Licensa
 
 * MicroMouse_evolutivo é GNU General Public License v3.0.
-* O MicroMouse_evolutivo está em "Creative Commons licensed".
+    * O MicroMouse_evolutivo está em "Creative Commons licensed".
 
 ## Autores
 
