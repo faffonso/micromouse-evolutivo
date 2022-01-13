@@ -41,7 +41,7 @@ void FitnessFunction(float fitness[TAMPOP], int crom[MAX_INFO_LEN], unsigned cha
         }
     }
 
-    fitness[indiv] = (90/(D + 1)) - (0.05)*R + (0.15)*B;
+    fitness[indiv] = (90/(D + 1)) - (0.04)*R + (0.1)*B;
     printf("\nindiv %d: D = %d, R = %d, B = %d, fitness = %.2f", indiv, D, R, B, fitness[indiv]);
 }
 
@@ -457,9 +457,9 @@ int main(){
 
         //* PREDATION
         chromosome *temp2 = list;
-        if(gen == 100 || gen == 180){        
+        if(gen == 50 || gen == 100 || gen == 150){        
             printf("\nPREDAÇÃO");
-            setMain(temp2, vectorAux, gen, i, Maze, Ds, 3, fitness, maxIteration, 0, 0);
+            //setMain(temp2, vectorAux, gen, i, Maze, Ds, 3, fitness, maxIteration, 0, 0);
         }
         i = 0;
 
@@ -468,7 +468,7 @@ int main(){
         //* Crossover e Mutação
         chromosome *temp4 = list;
 
-        if(gen != 100 || gen != 180)            
+        if(gen != 50 || gen != 100 || gen != 150)            
             setMain(temp4, vectorAux, gen, i, Maze, Ds, 4, fitness, maxIteration, modaData, moda);
 
         i = 0;

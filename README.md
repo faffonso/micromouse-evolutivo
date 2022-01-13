@@ -66,7 +66,7 @@ Após o comando acima ser executado, pode-se avaliar as informações obtidas a 
 Outra funcionalidade disponível, após o comando make é observar o labirinto por meio do site, para isso, a forma mais fácil é utilizar o arquivo *"index.html"* na pasta */docs/* e clicar no botão direito selecionando a opção "abrir com navegador". A Partir disso, basta utilizar os recursos disponíveis na interface e iniciar a animação.
 
 
-## Licensa
+## Licença
 
 * MicroMouse_evolutivo é GNU General Public License v3.0.
     * O MicroMouse_evolutivo está em "Creative Commons licensed".
