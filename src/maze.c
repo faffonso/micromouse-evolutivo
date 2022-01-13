@@ -141,8 +141,9 @@ void moveInMaze(unsigned char Maze[N][N], int crom[MAX_INFO_LEN], int x, int y, 
     }
 
     if(flag == 2)
+        crom[gene] = 6
         for(int m = gene + 1; m < MAX_INFO_LEN; m++){
             printf("CHEGOU\n");
-            crom[m] = 6;
+            crom[m] = 7;
         }
 }
