@@ -17,8 +17,19 @@ Projeto final desenvolvido para disciplina de Sistemas Evolutivos e Aplicados à
 
 O projeto é divido em diversas pastas neste repositório, onde a pasta **src** fornece a maior parte dos algoritmos, tanto evolutivo quanto para análise de dados. Para sua utilização, há na pasta **header** dois arquvios .h importantes para o funcionamento da pasta src. Além disso, na pastas **obj** encontra-se alguns arquvivos de extensão .o relativos ao Cmake feito, e na pasta **public** imagens dos labirintos utilizados de inspiração, bem como sua implementação em um .txt. Por fim, a pasta **docs** guarda todas as informações necessárias para o funcionamento do site com a interface, a qual é auxiliada pela pasta **assets** com as extensões .svg. No mais, alguns arquvios de extensão .d estão na pasta principal do repositório e sao originário do Cmake.
 
-### Funcionalidades e Resultados
+### Funcionamento e Resultados
 
+### Funcionamento
+
+O funcionamento do código com suas especificidades e demonstrações está explicado no vídeo de apresentação da disciplina:
+LINK
+
+### Funcionalidades
+
+* Resolver de forma evolutiva o labirinto do Micromouse
+* Análise de dados automatizadas
+* log com os dados em um arquivo texto
+* Interface no site com a animação representando a solução
 
 
 
