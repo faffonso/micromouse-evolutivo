@@ -1,12 +1,17 @@
-# MicroMouse-Evolutivo
+<h1 align="center"> MicroMouse-Evolutivo </h1>
+
+
+![Badge License](https://img.shields.io/github/license/faffonso/MicroMouse-Evolutivo?style=plastic)
+![Badge Stars](https://img.shields.io/github/stars/faffonso/MicroMouse-Evolutivo?style=plastic)
+![Badge Last modified](https://img.shields.io/github/last-commit/faffonso/micromouse-evolutivo?style=plastic)
+![Badge contributors](https://img.shields.io/github/contributors/faffonso/micromouse-evolutivo?style=plastic)
+
 
 ## Descrição do Projeto
 
 <p align="center">
 <img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/>
 </p>
-
-![Badge License](https://img.shields.io/github/license/faffonso/MicroMouse-Evolutivo?style=plastic)
 
 
 ### Overview
@@ -53,6 +58,11 @@ pip install random
 ~~~
 make all && ./MicroMouse_evolutivo 
 ~~~
+
+## Licensa
+
+* MicroMouse_evolutivo é GNU General Public License v3.0.
+* O MicroMouse_evolutivo está em "Creative Commons licensed".
 
 ## Autores
 
