@@ -1,9 +1,9 @@
 <h1 align="center"> MicroMouse-Evolutivo </h1>
 
-    ![Badge License](https://img.shields.io/github/license/faffonso/MicroMouse-Evolutivo?color=g)
-    ![Badge Stars](https://img.shields.io/github/stars/faffonso/MicroMouse-Evolutivo?color=g)
-    ![Badge Last modified](https://img.shields.io/github/last-commit/faffonso/micromouse-evolutivo?style=flat)
-    ![Badge contributors](https://img.shields.io/github/contributors/faffonso/micromouse-evolutivo?style=flat)
+![Badge License](https://img.shields.io/github/license/faffonso/MicroMouse-Evolutivo?color=g)
+![Badge Stars](https://img.shields.io/github/stars/faffonso/MicroMouse-Evolutivo?color=g)
+![Badge Last modified](https://img.shields.io/github/last-commit/faffonso/micromouse-evolutivo?style=flat)
+![Badge contributors](https://img.shields.io/github/contributors/faffonso/micromouse-evolutivo?style=flat)
 
 <h4 align="center"> 
     :construction:  Projeto em construção  :construction:
@@ -56,6 +56,8 @@ pip install random
 ~~~
 make all && ./MicroMouse_evolutivo 
 ~~~
+
+> obs: para problemas em rodar o código, revisar o arquivo "Makefile" e suas chamdas
 
 ## Licensa
 
