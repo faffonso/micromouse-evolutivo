@@ -13,7 +13,7 @@ void printList(chromosome *list){
     // Enquanto não houverem elementos "NULL" a lista continuará printando cada elemento
     printf("\n\n");
     while (tmp != NULL) {
-        printf ("Indivíduo %d: ", i);
+        //printf ("Indivíduo %d: ", i);
         for (int j = 0; j < MAX_INFO_LEN; j++)
             printf("%d ", tmp->info[j]);
         printf("\n");
