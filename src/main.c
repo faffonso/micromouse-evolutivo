@@ -11,10 +11,10 @@
 // Definições iniciais de variáveis globais 
 #define TAMPOP 3000 // Tamanho da população 
 #define N 33 // Número de blocos do labirinto 
-#define MUT_TAX 2 // Taxa de mutação --> NO MÁXIMO 5% 
+#define MUT_TAX 5 // Taxa de mutação --> NO MÁXIMO 5% 
 #define DIV 2 // Relação utilizada para fazer o crossover 
 #define MAX_INFO_LEN 300 // Máximo de informações por indivíduos
-#define GEN_MAX 500
+#define GEN_MAX 250
 int gen = 0; // Seta a primeira geração 
 
 // Função que trabalha com a avaliação do fitness dos indivíduos
@@ -170,9 +170,10 @@ void Crossover(int crom[], int moda[MAX_INFO_LEN], int step, int best){
         // crossover para os não melhores de todos
         if(best == 0){
             // até o passo ele provavelmente deve pegar a moda dos melhores
+            // mutação aplicada diretamente no quão modificado eles ficarão
             if(i < step){
                 x = rand() % 101;
-                if(x < 95)
+                if(x < (100 - MUT_TAX))
                     crom[i] = moda[i];
                 else
                     crom[i] = rand() % 4;

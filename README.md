@@ -24,18 +24,20 @@ O projeto é divido em diversas pastas neste repositório, onde a pasta **src** 
 O funcionamento do código com suas especificidades e demonstrações está explicado no vídeo de apresentação da disciplina:
 LINK
 
-### Funcionalidades
-
-* Resolver de forma evolutiva o labirinto do Micromouse
-* Análise de dados automatizadas
-* log com os dados em um arquivo texto
-* Interface no site com a animação representando a solução
-
-
-
 ### Parâmetros evolutivos
 
 Os parametros utilizados para montar a parte evolutiva do código estão explicados durante sua implementação, porém cabe, nesse momento, uma breve descrição dos principais.
+
+* **TAMPOP:** Número de indivíduos da população
+* **MAX_INFO_LEN:** Número de genes disponíveis para resolver o labirinto (tamanho máximo de informações por cromossomo)
+* **GEN_MAX:** Máximo de gerações a serem rodadas
+* **MUX_TAX:** Taxa de mutação (quanto de mutabilidade é aplicado no CROSSOVER)
+
+> obs: o N (tamanho do labirinto) é fixo
+
+### Resultados
+
+
 
 ## How to run
 
