@@ -1,11 +1,11 @@
 <h1 align="center"> MicroMouse-Evolutivo </h1>
 
 
-![Badge License](https://img.shields.io/github/license/faffonso/MicroMouse-Evolutivo?style=flat)
+![Badge License](https://img.shields.io/github/license/faffonso/MicroMouse-Evolutivo?color=g)
 ![Badge Stars](https://img.shields.io/github/stars/faffonso/MicroMouse-Evolutivo?color=g)
 ![Badge Last modified](https://img.shields.io/github/last-commit/faffonso/micromouse-evolutivo?style=flat)
 ![Badge contributors](https://img.shields.io/github/contributors/faffonso/micromouse-evolutivo?style=flat)
-![Badge status](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
+
 
 <h4 align="center"> 
     :construction:  Projeto em construção  :construction:
