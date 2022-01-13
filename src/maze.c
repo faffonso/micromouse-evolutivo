@@ -76,7 +76,7 @@ void MazeCreation(unsigned char Maze[N][N]){
     // Roda um for para escolher o labirinto a ser usado, separando em dois labirintos principais 
     for(int i = 0; i < N; i++)
         for(int j = 0; j < N; j++)
-            Maze[i][j] = Maze1[i][j]; //* Trocar o Maze aqui
+            Maze[i][j] = Maze2[i][j]; //* Trocar o Maze aqui
 }
 
 // Determina a posição do indivíduo dentro do labirinto
