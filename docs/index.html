@@ -22,44 +22,51 @@
             <div id="buttons"class="d-flex justify-content-evenly align-items-center rounded-bottom shadow-lg border border-3 border-dark" style="margin-top: -6px">
                 <button style="border: none">
                     <i onClick="play()">
-                        <img src="../public/images/play.svg" alt="">
+                        <img src="images/play.svg" alt="">
                     </i>
                 </button>
                 <button style="border: none">
                     <i onClick="pause()">
-                        <img src="../public/images/pause.svg" alt="">
+                        <img src="images/pause.svg"" alt="">
                     </i>
                 </button>
                 <button style="border: none">
-                    <i onClick="restart()">
-                        <img src="../public/images/refresh-cw.svg" alt="">
+                    <i onClick="restart(0)">
+                        <img src="images/refresh-cw.svg" alt="">
                     </i>
                 </button>
             </div>
         </div>
         <div id="main-right">
             <div id="parameters"class="rounded shadow-lg border border-3">
+
                 <div class="p-3 mt-4 btn-group  d-flex justify-content-center" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary" onClick="maze(0)">Maze 1</button>
+                    <button type="button" class="btn btn-primary" onClick="maze(0);">Maze 1</button>
                     <button type="button" class="btn btn-primary" onClick="maze(1)">Maze 2</button>
                 </div>
-                <label for="customRange1" class="p-3 btnform-label">Tamanho da População</label>
-                <input type="range" class="p-3 form-range" min="100" max="500" step="10" id="customRange1">
-                <label for="customRange2" class="p-3 btnform-label">Nº melhores indivíduos</label>
-                <input type="range" class="p-3 form-range" min="0" max="50" step="5" id="customRange2">
-                <label for="customRange3" class="p-3 btnform-label">Taxa de mutação</label>
-                <input type="range" class="p-3 form-range" min="0" max="40" step="2.5" id="customRange3">
+                <label for="customRange1" class="p-3 btnform-label">Tamanho da População:</label> <output id="TAMPOP">3000</output>
+                <input type="range" class="p-3 form-range" value="3000" min="1000" max="3500" step="100" id="customRange1" onchange="updateTextInput(this.value, 1)">
+
+                <label for="customRange2" class="p-3 btnform-label">Nº melhores indivíduos:</label> <output id="DIV">10</output>
+                <input type="range" class="p-3 form-range" value="10" min="0" max="50" step="5" id="customRange2" onchange="updateTextInput(this.value, 2)">
+
+                <label for="customRange3" class="p-3 btnform-label">Taxa de mutação:</label> <output id="MUT">10</output>
+                <input type="range" class="p-3 form-range" value="10" min="0" max="40" step="2.5" id="customRange3" onchange="updateTextInput(this.value, 3)">
             </div>
             <div  id="database"class=" rounded shadow-lg border border-3">
-                <p class="mt-3 ms-4">Geração: </p>
-                <p class="ms-4">Fitness máximo: </p>
-                <p class="ms-4">Fitness médio: </p>
+                <div>
+                    <p class="mt-3 ms-4" style="display: inline-block">Geração: </p>  <p id="geracao" style="display: inline-block">0</p>
+                </div>
+                <div>
+                    <p class="ms-4"style="display: inline-block">Fitness máximo: </p>  <p id="fitMax" style="display: inline-block">0</p>
+                </div>
+                <div>
+                    <p class="ms-4" style="display: inline-block">Fitness médio: </p>  <p id="fit" style="display: inline-block">0</p>
+                </div>
             </div>
         </div>
-
     </div>
-    <input type="file" name="file" id="file">
-    <script  src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
 
