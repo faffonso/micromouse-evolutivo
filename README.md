@@ -15,27 +15,38 @@
 
 Projeto final desenvolvido para disciplina de Sistemas Evolutivos e Aplicados à Robótica (SSC0713) oferecida pelo ICMC-USP. Todos os programas  e algoritmos desenvolvidos na disciplina e nesse projeto possuem apenas fins educacionais. O projeto é um compilado de algoritmos com o intuito de montar um algoritmo evolutivo para resolver o labirinto de competições MicroMouse, como no link: https://en.wikipedia.org/wiki/Micromouse. 
 
-O projeto é divido em diversas pastas neste repositório, onde a pasta **src** fornece a maior parte dos algoritmos, tanto evolutivo quanto para análise de dados. Para sua utilização, há na pasta **header** dois arquvios .h importantes para o funcionamento da pasta src. Além disso, na pastas **obj** encontra-se alguns arquvivos de extensão .o relativos ao Cmake feito, e na pasta **public** imagens dos labirintos utilizados de inspiração, bem como sua implementação em um .txt. Por fim, a pasta **docs** guarda todas as informações necessárias para o funcionamento do site com a interface, a qual é auxiliada pela pasta **assets** com as extensões .svg. No mais, alguns arquvios de extensão .d estão na pasta principal do repositório e sao originário do Cmake.
+![Exemplo de labirinto](https://user-images.githubusercontent.com/62042164/149367647-4ba8d008-2783-48e0-8a80-9676d314e005.png)
 
 ### Funcionamento e Resultados
+
+### Organização
+
+* **assets:** arquivos adicionais
+* **docs:** códigos da interface
+* **header:** header da parte evolutiva
+* **obj:** objs do CMake
+* **public:** Imagens e arquvios do labirinto MicroMouse
+* **src:** Arquivos source da parte evolutiva
+    * **data_analysis:** Jupyter com a análise dos dados
+    * arquivos evolutivos e logs
+* arquivos gerados pelo Cmake 
 
 ### Funcionamento
 
 O funcionamento do código com suas especificidades e demonstrações está explicado no vídeo de apresentação da disciplina:
 LINK
 
-### Funcionalidades
-
-* Resolver de forma evolutiva o labirinto do Micromouse
-* Análise de dados automatizadas
-* log com os dados em um arquivo texto
-* Interface no site com a animação representando a solução
-
-
-
 ### Parâmetros evolutivos
 
 Os parametros utilizados para montar a parte evolutiva do código estão explicados durante sua implementação, porém cabe, nesse momento, uma breve descrição dos principais.
+
+* **TAMPOP:** Número de indivíduos da população
+* **MAX_INFO_LEN:** Número de genes disponíveis para resolver o labirinto (tamanho máximo de informações por cromossomo)
+* **GEN_MAX:** Máximo de gerações a serem rodadas
+* **MUX_TAX:** Taxa de mutação (quanto de mutabilidade é aplicado no CROSSOVER)
+
+> obs: o N (tamanho do labirinto) é fixo e estipulado pelo Micromouse
+
 
 ## How to run
 
@@ -65,16 +76,16 @@ pip install random
 ~~~
 ### Execução
 
-Afim de rodar o código principal evolutivo, pode-se utilizar o terminal integrado do VS code ou o terminal do sistema operacional na pasta do repositório a partir do comando:
+* **Evolutivo:** Afim de rodar o código principal evolutivo, pode-se utilizar o terminal integrado do VS code ou o terminal do sistema operacional na pasta do repositório a partir do comando:
 ~~~
 make all && ./MicroMouse_evolutivo
 ~~~
  
 > obs: para problemas em rodar o comando acima, revisar o arquivo "Makefile" e suas chamadas
  
-Após o comando acima ser executado, pode-se avaliar as informações obtidas a partir do arquivo *"data_analysis.ipynb"* no path */src/data analysis/*. Recomenda-se, ou utilizar o vs code com a extensão "Jupyter", ou clicando com botão direito no arquivo e selecionando a opção "abrir com navegador". Em ambos os casos o comando de execução está no botão no canto superior da página com nome **Run all**. Vale lembrar que dependendo do número de dados o programa pode levar alguns instantes para ser executado.
+* **Análise:** Após o comando acima ser executado, pode-se avaliar as informações obtidas a partir do arquivo *"data_analysis.ipynb"* no path */src/data analysis/*. Recomenda-se, ou utilizar o vs code com a extensão "Jupyter", ou clicando com botão direito no arquivo e selecionando a opção "abrir com navegador". Em ambos os casos o comando de execução está no botão no canto superior da página com nome **Run all**.
  
-Outra funcionalidade disponível, após o comando make é observar o labirinto por meio do **site**, para isso, a forma mais fácil é utilizar o arquivo *"index.html"* na pasta */docs/* e clicar no botão direito selecionando a opção "abrir com navegador". A Partir disso, basta utilizar os recursos disponíveis na interface e iniciar a animação.
+* **Interface:** Outra funcionalidade disponível, após o comando make é observar o labirinto por meio da **interface do site**, para isso, basta acessar https://faffonso.github.io/micromouse-evolutivo/, selecionar o Database querido e rodar a animação.
 
 
 ## Licença
