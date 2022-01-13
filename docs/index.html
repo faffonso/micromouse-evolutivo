@@ -39,24 +39,24 @@
         </div>
         <div id="main-right">
             <div id="parameters"class="rounded shadow-lg border border-3">
-                <div class="mt-2 p-3 btn-group  d-flex justify-content-center" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary" onClick="dataDefault();">Database Default</button>
-                    </button>
+                <div class="mt-2 p-2 px-3 btn-group  d-flex justify-content-center" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary" onClick="dataDefault(1);">Maze1 Data Default</button>
+                    <button type="button" class="btn btn-primary" onClick="dataDefault(2)">Maze2 Data Default</button>
                 </div>
-                <div class="p-3 btn-group  d-flex justify-content-center" role="group" aria-label="Basic example">
+                <div class="p-2 btn-group px-3  d-flex justify-content-center" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-primary" onClick="maze(0);">Maze 1</button>
                     <button type="button" class="btn btn-primary" onClick="maze(1)">Maze 2</button>
                 </div>
-                <label for="customRange1" class="p-3 btnform-label">Tamanho da População:</label> <output id="TAMPOP">3000</output>
-                <input type="range" class="p-3 form-range" value="3000" min="1000" max="3500" step="100" id="customRange1" onchange="updateTextInput(this.value, 1)" disabled>
+                <label for="customRange1" class="p-2 px-3  btnform-label">Tamanho da População:</label> <output id="TAMPOP">3000</output>
+                <input type="range" class="p-2 px-3  form-range" value="3000" min="1000" max="3500" step="100" id="customRange1" onchange="updateTextInput(this.value, 1)" disabled>
 
-                <label for="customRange2" class="p-3 btnform-label">Nº melhores indivíduos:</label> <output id="DIV">10</output>
-                <input type="range" class="p-3 form-range" value="10" min="0" max="50" step="5" id="customRange2" onchange="updateTextInput(this.value, 2)" disabled>
+                <label for="customRange2" class="p-2 px-3  btnform-label">Nº melhores indivíduos:</label> <output id="DIV">10</output>
+                <input type="range" class="p-2 px-3  form-range" value="10" min="0" max="50" step="5" id="customRange2" onchange="updateTextInput(this.value, 2)" disabled>
 
-                <label for="customRange3" class="p-3 btnform-label">Taxa de mutação:</label> <output id="MUT">5</output>
-                <input type="range" class="p-3 form-range" value="5" min="0" max="40" step="2.5" id="customRange3" onchange="updateTextInput(this.value, 3)" disabled>
+                <label for="customRange3" class="p-2 px-3  btnform-label">Taxa de mutação:</label> <output id="MUT">5</output>
+                <input type="range" class="p-2 px-3  form-range" value="5" min="0" max="40" step="2.5" id="customRange3" onchange="updateTextInput(this.value, 3)" disabled>
 
-                <div class="p-3">
+                <div class="p-2 px-3 ">
                     <label for="">Inserir database local</label>
                     <input type="file" class="form-control mt-2" id="inputfile" onchange="newFile(this.files[0]);">
                 </div>
