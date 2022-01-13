@@ -34,7 +34,7 @@ Projeto final desenvolvido para disciplina de Sistemas Evolutivos e Aplicados à
 ### Funcionamento
 
 O funcionamento do código com suas especificidades e demonstrações está explicado no vídeo de apresentação da disciplina:
-https://drive.google.com/file/d/1ACR8glyEmO4OqcV5zKy9schgDcGg-833/view
+https://drive.google.com/file/d/1BvcZN33jFCmDlp2cnqffpcGRXIWe7NNp/view
 
 ### Parâmetros evolutivos
 
