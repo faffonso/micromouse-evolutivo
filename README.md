@@ -15,15 +15,13 @@
 
 Projeto final desenvolvido para disciplina de Sistemas Evolutivos e Aplicados à Robótica (SSC0713) oferecida pelo ICMC-USP. Todos os programas  e algoritmos desenvolvidos na disciplina e nesse projeto possuem apenas fins educacionais. O projeto é um compilado de algoritmos com o intuito de montar um algoritmo evolutivo para resolver o labirinto de competições MicroMouse, como no link: https://en.wikipedia.org/wiki/Micromouse. 
 
-![fitness exemplo](https://user-images.githubusercontent.com/62042164/149367476-1a2d256f-d6b7-4d89-ba4d-5a0843df9725.png)
-
 ![Exemplo de labirinto](https://user-images.githubusercontent.com/62042164/149367647-4ba8d008-2783-48e0-8a80-9676d314e005.png)
 
 ### Funcionamento e Resultados
 
 ### Organização
 
-* **assets:** svgs para a interface
+* **assets:** arquivos adicionais
 * **docs:** códigos da interface
 * **header:** header da parte evolutiva
 * **obj:** objs do CMake
@@ -48,9 +46,6 @@ Os parametros utilizados para montar a parte evolutiva do código estão explica
 * **MUX_TAX:** Taxa de mutação (quanto de mutabilidade é aplicado no CROSSOVER)
 
 > obs: o N (tamanho do labirinto) é fixo e estipulado pelo Micromouse
-
-### Resultados
-
 
 
 ## How to run
